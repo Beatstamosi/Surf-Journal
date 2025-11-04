@@ -4,7 +4,7 @@ import handleError from "../services/handleError.js";
 
 const getForeCast = async (req: Request, res: Response) => {
   const spot = "Popoyo";
-  const sessionStart = "2025-11-03 08:00";
+  const sessionStart = "2025-11-04 08:00";
 
   try {
     const report = await getSurfReport(sessionStart, spot);

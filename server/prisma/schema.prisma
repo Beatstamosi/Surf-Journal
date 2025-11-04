@@ -14,9 +14,174 @@ datasource db {
 }
 
 model User {
-  id        String @id @default(uuid())
-  email     String @unique
-  firstname String
-  lastname  String
-  password  String
+  id             Int             @id @default(autoincrement())
+  name           String
+  email          String          @unique
+  bio            String?
+  profilePicture Bytes?
+  signedUpAt     DateTime        @default(now())
+  quiver         Quiver[]        @relation("UserQuiver")
+  savedPosts     SavedPosts[]    @relation("UserSavedPosts")
+  boards         Board[]         @relation("UserBoards")
+  sessions       Session[]       @relation("UserSessions")
+  posts          Post[]          @relation("UserPosts")
+  comments       Comment[]       @relation("UserComments")
+  likes          Like[]          @relation("UserLikes")
+  following      UserFollowing[] @relation("UserFollowing")
+  followers      UserFollowing[] @relation("UserFollowers")
+
+  @@index([email])
+}
+
+model Board {
+  id       Int       @id @default(autoincrement())
+  brand    String
+  size     String
+  volume   Float
+  name     String
+  ownerId   Int
+  owner     User      @relation("UserBoards", fields: [ownerId], references: [id], onDelete: Cascade)
+  quiver   Quiver[]  @relation("BoardQuiver")
+  sessions Session[]
+
+  @@index([ownerId])
+}
+
+model Quiver {
+  id      Int @id @default(autoincrement())
+  userId  Int
+  boardId Int
+
+  user  User  @relation("UserQuiver", fields: [userId], references: [id], onDelete: Cascade)
+  board Board @relation("BoardQuiver", fields: [boardId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, boardId])
+  @@index([userId])
+  @@index([boardId])
+}
+
+model Forecast {
+  id             Int       @id @default(autoincrement())
+  spotName       String
+  region         String?
+  surflineSpotId String?
+  description    String?   // surf.description (e.g. "Waist to chest")
+  size           String?   // e.g. "Surf: 0.9 - 1.2"
+  waveEnergy     String?   // e.g. "98kJ"
+  date           DateTime  // from sessionStart
+  tideHeight     String?   // e.g. "2.56 ft"
+  tideType       String?   // e.g. "NORMAL"
+  windDirection  String?
+  windSpeed      String?
+  windGust       String?
+
+  // Multiple swells — separate table for normalization
+  swells         Swell[]   
+
+  sessions       Session[]
+}
+
+model Swell {
+  id          Int       @id @default(autoincrement())
+  forecastId  Int
+  name        String?   // "Swell 1", "Swell 2"...
+  height      String?   // "Height: 0.60122"
+  period      String?   // "Period: 13 seconds"
+  power       String?   // "Power: 82kJ"
+  direction   String?   // "Direction: 218.54633"
+
+  forecast Forecast @relation(fields: [forecastId], references: [id], onDelete: Cascade)
+}
+
+
+model Session {
+  id                   Int       @id @default(autoincrement())
+  date                 DateTime
+  startTime            DateTime?
+  description          String?
+  sessionMatchForecast String?
+  image                Bytes?
+  shared               Boolean   @default(false)
+
+  userId     Int
+  forecastId Int?
+  boardId    Int?
+
+  user     User      @relation("UserSessions", fields: [userId], references: [id], onDelete: Cascade)
+  forecast Forecast? @relation(fields: [forecastId], references: [id])
+  board    Board?    @relation(fields: [boardId], references: [id])
+  post     Post?
+
+  @@index([userId])
+  @@index([forecastId])
+  @@index([boardId])
+}
+
+model SavedPosts {
+  id     Int @id @default(autoincrement())
+  userId Int
+  postId Int
+
+  user User @relation("UserSavedPosts", fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation("PostSavedBy", fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+  @@index([userId])
+  @@index([postId])
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  posted    DateTime @default(now())
+  creatorId Int
+  sessionId Int?     @unique
+
+  creator  User         @relation("UserPosts", fields: [creatorId], references: [id], onDelete: Cascade)
+  session  Session?     @relation(fields: [sessionId], references: [id])
+  likes    Like[]       @relation("PostLikes")
+  comments Comment[]    @relation("PostComments")
+  savedBy  SavedPosts[] @relation("PostSavedBy")
+
+  @@index([creatorId])
+  @@index([sessionId])
+}
+
+model Like {
+  id     Int @id @default(autoincrement())
+  postId Int
+  userId Int
+
+  post Post @relation("PostLikes", fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation("UserLikes", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([userId])
+  @@index([postId])
+}
+
+model Comment {
+  id       Int      @id @default(autoincrement())
+  postId   Int
+  authorId Int
+  content  String
+  posted   DateTime @default(now())
+
+  post   Post @relation("PostComments", fields: [postId], references: [id], onDelete: Cascade)
+  author User @relation("UserComments", fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@index([authorId])
+}
+
+model UserFollowing {
+  id              Int @id @default(autoincrement())
+  userId          Int
+  followingUserId Int
+
+  user      User @relation("UserFollowing", fields: [userId], references: [id], onDelete: Cascade)
+  following User @relation("UserFollowers", fields: [followingUserId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, followingUserId])
+  @@index([userId])
+  @@index([followingUserId])
 }
