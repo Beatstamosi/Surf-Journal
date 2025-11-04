@@ -9,11 +9,7 @@ import TestForecast from "./TestForecast.js";
 const routes = [
   {
     path: "/",
-    element: (
-      <RequireAuth>
-        <App />
-      </RequireAuth>
-    ),
+    element: <App />,
     errorElement: <ErrorPage />,
   },
   {

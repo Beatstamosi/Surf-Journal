@@ -3,6 +3,7 @@ import { useAuth } from "./components//Authentication/useAuth.jsx";
 import { useMediaQuery } from "react-responsive";
 import style from "./App.module.css";
 import Sidebar from "./components/Sidebar/Sidebar.js";
+import Footer from "./components/Footer/Footer.js";
 
 function App() {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -20,7 +21,9 @@ function App() {
         <div className={style.pageWrapperDesktop}>
           <Sidebar />
           <Outlet />
-          // Footer
+        </div>
+        <div className={style.wrapperFooter}>
+          <Footer />
         </div>
       </>
     );
