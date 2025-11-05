@@ -1,6 +1,6 @@
-import { apiClient } from "../utils/apiClient";
+import { apiClient } from "../../utils/apiClient";
 
-function TestForecast() {
+function Feed() {
   const clickHandler = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -21,4 +21,4 @@ function TestForecast() {
   );
 }
 
-export default TestForecast;
+export default Feed;

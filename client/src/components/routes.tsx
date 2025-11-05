@@ -3,7 +3,11 @@ import ErrorPage from "./ErrorPage/ErrorPage.jsx";
 import Login from "./Authentication/Login/Login.jsx";
 import SignUp from "./Authentication/Sign Up/SignUp.jsx";
 // import RequireAuth from "./Authentication/RequireAuth.jsx";
-import TestForecast from "./TestForecast.js";
+import Feed from "./Feed/Feed.js";
+import MySessions from "./ MySessions/MySessions.js";
+import AddSession from "./AddSession/AddSession.js";
+import MyQuiver from "./MyQuiver/MyQuiver.js";
+import MyProfile from "./MyProfile/MyProfile.js";
 
 const routes = [
   {
@@ -12,8 +16,24 @@ const routes = [
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/forecast",
-        element: <TestForecast />,
+        path: "/",
+        element: <Feed />,
+      },
+      {
+        path: "/my-sessions",
+        element: <MySessions />,
+      },
+      {
+        path: "/add-session",
+        element: <AddSession />,
+      },
+      {
+        path: "/my-quiver",
+        element: <MyQuiver />,
+      },
+      {
+        path: "/edit-profile",
+        element: <MyProfile />,
       },
     ],
   },
