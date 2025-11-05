@@ -4,6 +4,7 @@ import { useMediaQuery } from "react-responsive";
 import style from "./App.module.css";
 import Sidebar from "./components/Sidebar/Sidebar.js";
 import Footer from "./components/Footer/Footer.js";
+import NavBarMobile from "./components/NavbarMobile/NavBarMobile.js";
 
 function App() {
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -20,7 +21,9 @@ function App() {
       <>
         <div className={style.pageWrapperDesktop}>
           <Sidebar />
-          <Outlet />
+          <div className={style.mainContent}>
+            <Outlet />
+          </div>
         </div>
         <div className={style.wrapperFooter}>
           <Footer />
@@ -29,17 +32,12 @@ function App() {
     );
   } else {
     return (
-      <>
-        <div>Navbar Mobile</div>
+      <div className={style.pageWrapperMobile}>
         <Outlet />
-        // Footer
-      </>
+        <NavBarMobile />
+      </div>
     );
   }
-
-  // if mobile
-  // navbar logo + hamburger
-  // outlet below
 }
 
 export default App;

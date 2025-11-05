@@ -1,4 +1,4 @@
-import styles from "./Sidebar.module.css";
+import style from "./Sidebar.module.css";
 import { Link, useLocation } from "react-router-dom";
 import { GiWaveSurfer } from "react-icons/gi";
 import { MdOutlineSurfing } from "react-icons/md";
@@ -13,16 +13,16 @@ export default function Sidebar() {
   const currentPath = location.pathname;
 
   return (
-    <div className={styles.sidebarWrapper}>
-      <div className={styles.wrapperLogo}>
+    <div className={style.sidebarWrapper}>
+      <div className={style.wrapperLogo}>
         <img src={surfLogLogo} alt="Wavelog Logo" />
       </div>
 
-      <div className={styles.sidebarBlock}>
+      <div className={style.sidebarBlock}>
         <Link
           to="/"
-          className={`${styles.sidebarLink} ${
-            currentPath === "/" ? styles.active : ""
+          className={`${style.sidebarLink} ${
+            currentPath === "/" ? style.active : ""
           }`}
         >
           <GiWaveSurfer size={"1.5em"} />
@@ -30,11 +30,11 @@ export default function Sidebar() {
         </Link>
       </div>
 
-      <div className={styles.sidebarBlock}>
+      <div className={style.sidebarBlock}>
         <Link
           to="/my-sessions"
-          className={`${styles.sidebarLink} ${
-            currentPath === "/my-sessions" ? styles.active : ""
+          className={`${style.sidebarLink} ${
+            currentPath === "/my-sessions" ? style.active : ""
           }`}
         >
           <MdOutlineSurfing size={"1.5em"} />
@@ -43,8 +43,8 @@ export default function Sidebar() {
 
         <Link
           to="/add-session"
-          className={`${styles.sidebarLink} ${
-            currentPath === "/add-session" ? styles.active : ""
+          className={`${style.sidebarLink} ${
+            currentPath === "/add-session" ? style.active : ""
           }`}
         >
           <IoIosAddCircleOutline size={"1.5em"} />
@@ -52,11 +52,11 @@ export default function Sidebar() {
         </Link>
       </div>
 
-      <div className={styles.sidebarBlock}>
+      <div className={style.sidebarBlock}>
         <Link
           to="/my-quiver"
-          className={`${styles.sidebarLink} ${
-            currentPath === "/my-quiver" ? styles.active : ""
+          className={`${style.sidebarLink} ${
+            currentPath === "/my-quiver" ? style.active : ""
           }`}
         >
           <GiSurferVan size={"1.5em"} />
@@ -65,8 +65,8 @@ export default function Sidebar() {
 
         <Link
           to="/edit-profile"
-          className={`${styles.sidebarLink} ${
-            currentPath === "/edit-profile" ? styles.active : ""
+          className={`${style.sidebarLink} ${
+            currentPath === "/edit-profile" ? style.active : ""
           }`}
         >
           <FaUserEdit size={"1.5em"} />
@@ -74,8 +74,8 @@ export default function Sidebar() {
         </Link>
       </div>
 
-      <div className={styles.sidebarBlock}>
-        <LogOut className={styles.sidebarLink} />
+      <div className={style.sidebarBlock}>
+        <LogOut className={style.sidebarLink} />
       </div>
     </div>
   );
