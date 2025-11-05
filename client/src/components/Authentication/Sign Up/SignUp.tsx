@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import style from "./SignUp.module.css";
 import { useNavigate } from "react-router-dom";
 import { useDebouncedCallback } from "use-debounce";
+import logo from "../../../assets/surflog_logo.png";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -138,6 +139,9 @@ function SignUp() {
 
   return (
     <div className={style.pageWrapper}>
+      {/* Logo */}
+      <img src={logo} alt="Whisp Logo" className={style.logo} />
+
       <form
         onSubmit={onFormSubmit}
         className={style.formContainer}

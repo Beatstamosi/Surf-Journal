@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import style from "./Login.module.css";
 import { useAuth } from "../useAuth.tsx";
+import logo from "../../../assets/surflog_logo.png";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -58,6 +59,9 @@ function Login() {
 
   return (
     <div className={style.pageWrapper}>
+      {/* Logo */}
+      <img src={logo} alt="Whisp Logo" className={style.logo} />
+
       <h1>Login</h1>
       {loginFailed ? <p>Email or password is wrong</p> : null}
       <form onSubmit={onFormSubmit}>
