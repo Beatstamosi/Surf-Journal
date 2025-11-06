@@ -4,14 +4,20 @@ import { PiUploadSimple } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useLogOut from "../Authentication/LogOut/useLogOut";
+import LogOutBtn from "../Authentication/LogOut/LogOutBtn";
+import { useMediaQuery } from "react-responsive";
+
+// TODO: 
+  // save profile + file upload
 
 export default function MyProfile() {
   const { user } = useAuth();
-  const [bio, setBio] = useState<string>(user?.bio ?? "Hi, I am using Whisp!");
+  const [bio, setBio] = useState<string>(user?.bio || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const navigate = useNavigate();
   const logOutHandler = useLogOut();
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -86,10 +92,13 @@ export default function MyProfile() {
     }
   };
 
-  console.log(user);
-
   return (
     <div className={style.editProfileWrapper}>
+      {isMobile && (
+        <div className={style.logOutBlock}>
+          <LogOutBtn className={style.logoutLink} />
+        </div>
+      )}
       <h2 className={style.greeting}>
         Hi {user?.firstName} {user?.lastName}!
       </h2>
@@ -106,11 +115,10 @@ export default function MyProfile() {
               onChange={handleFileChange}
             />
             <label htmlFor="profileUpload">
-              <PiUploadSimple size={"1em"} color="white" />
+              <PiUploadSimple size={"1.5em"} color="white" />
             </label>
           </div>
         </div>
-        <span className={style.uploadText}>Upload Profile Picture</span>
       </div>
 
       {/* Bio */}

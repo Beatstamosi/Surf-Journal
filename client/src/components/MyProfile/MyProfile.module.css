@@ -1,0 +1,341 @@
+.editProfileWrapper {
+  max-width: 900px;
+  margin: 0 auto 2rem auto;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background: linear-gradient(
+    to bottom,
+    var(--bg-primary) 0%,
+    var(--color-offwhite) 100%
+  );
+  box-sizing: border-box;
+}
+
+/* Greeting */
+.greeting {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: left;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+  background-clip: text;
+}
+
+/* Profile Picture */
+.containerProfileImg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  background: var(--bg-primary);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.profileImgWrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: visible;
+  border: 4px solid var(--color-sky);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(95, 168, 211, 0.2);
+}
+
+.profileImgWrapper:hover {
+  border-color: var(--color-orange);
+  box-shadow: 0 6px 20px rgba(255, 153, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.profileImgWrapper img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+/* Upload Icon */
+.iconUploadImg {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(135deg, var(--color-orange) 0%, #ff7700 100%);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(255, 153, 0, 0.4);
+  border: 3px solid var(--bg-primary);
+}
+
+.iconUploadImg:hover {
+  background: linear-gradient(135deg, #ff7700 0%, var(--color-orange) 100%);
+  transform: scale(1.1) rotate(10deg);
+  box-shadow: 0 4px 14px rgba(255, 153, 0, 0.5);
+}
+
+.iconUploadImg input {
+  display: none;
+}
+
+.iconUploadImg label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.uploadText {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* Bio section */
+.bioSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--bg-primary);
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.bioSection label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-navy);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.bioSection textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  border-radius: 12px;
+  border: 2px solid var(--color-lightgray);
+  padding: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-family: inherit;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.bioSection textarea:focus {
+  border-color: var(--color-sky);
+  outline: none;
+  background-color: var(--bg-primary);
+  box-shadow: 0 0 0 4px rgba(95, 168, 211, 0.1);
+  transform: translateY(-1px);
+}
+
+.bioSection textarea::placeholder {
+  color: var(--color-gray);
+  opacity: 0.6;
+}
+
+/* Action buttons */
+.actionButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  align-items: center;
+}
+
+.actionButtons button {
+  border: none;
+  border-radius: 12px;
+  padding: 0.85rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+.actionButtons button:active {
+  transform: scale(0.98) translateY(1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Save */
+.btnPrimary {
+  background: linear-gradient(
+    135deg,
+    var(--color-sky) 0%,
+    var(--color-blue) 100%
+  );
+  color: white;
+  border: none;
+}
+
+.btnPrimary:hover {
+  background: linear-gradient(
+    135deg,
+    var(--color-blue) 0%,
+    var(--color-navy) 100%
+  );
+  box-shadow: 0 4px 12px rgba(95, 168, 211, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Delete */
+.btnDelete {
+  background-color: transparent;
+  border: 2px solid var(--color-danger);
+  color: var(--color-danger);
+  box-shadow: none;
+}
+
+.btnDelete:hover {
+  background-color: var(--color-danger);
+  color: white;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Cancel */
+.btnSecondary {
+  background-color: var(--color-offwhite);
+  border: 2px solid var(--color-lightgray);
+  color: var(--text-primary);
+  box-shadow: none;
+}
+
+.btnSecondary:hover {
+  background-color: var(--color-lightgray);
+  border-color: var(--color-gray);
+  transform: translateY(-2px);
+}
+
+/* Sidebar logout */
+.sidebarBlock {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.sidebarLink {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+.sidebarLink:hover {
+  color: var(--color-danger);
+  background-color: rgba(231, 76, 60, 0.08);
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .editProfileWrapper {
+    padding: 1.5rem 1rem 2.5rem;
+    max-width: 100%;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .greeting {
+    text-align: center;
+    font-size: 1.75rem;
+  }
+
+  .containerProfileImg {
+    align-items: center;
+    padding: 1.5rem 0;
+    align-self: stretch;
+  }
+
+  .profileImgWrapper {
+    width: 130px;
+    height: 130px;
+    border-width: 3px;
+  }
+
+  .profileImgWrapper img {
+    width: 130px;
+    height: 130px;
+  }
+
+  .iconUploadImg {
+    width: 40px;
+    height: 40px;
+    bottom: -2px;
+    right: -2px;
+  }
+
+  .bioSection {
+    width: 100%;
+    padding: 1.25rem;
+  }
+
+  .bioSection label {
+    text-align: left;
+    font-size: 0.9rem;
+  }
+
+  .bioSection textarea {
+    text-align: left;
+    min-height: 140px;
+    font-size: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .actionButtons {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 1rem;
+    gap: 0.75rem;
+  }
+
+  .actionButtons button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1.05rem;
+    border-radius: 12px;
+  }
+
+  .btnDelete {
+    border-width: 2px;
+  }
+
+  .logOutBlock {
+    align-self: flex-end;
+    margin-bottom: 0;
+    margin-top: -0.5rem;
+  }
+
+  .logoutLink {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
