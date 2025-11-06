@@ -19,8 +19,8 @@ model User {
   lastName       String
   email          String          @unique
   password       String
-  bio            String?
-  profilePicture Bytes?
+  bio            String?         @default("Welcome to my Surflog!")
+  profilePicture String          @default("https://tannirocilfbqnjskoag.supabase.co/storage/v1/object/sign/Profile%20Pictures/default_avatar.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9lMWQ1MDJjZi1jMDc4LTQyNjMtYTQ2ZS1kODM2ZDFhNzBhNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJQcm9maWxlIFBpY3R1cmVzL2RlZmF1bHRfYXZhdGFyLmpwZyIsImlhdCI6MTc2MjQyNDY5OSwiZXhwIjoyMDc3Nzg0Njk5fQ.sLu6pM-pJi0-7J1dbj6OZxeGiwulbeQ0E-lOB-KRv4A")
   signedUpAt     DateTime        @default(now())
   quiver         Quiver[]        @relation("UserQuiver")
   savedPosts     SavedPosts[]    @relation("UserSavedPosts")
@@ -101,7 +101,7 @@ model Session {
   startTime            DateTime?
   description          String?
   sessionMatchForecast String?
-  image                Bytes?
+  image                String?
   shared               Boolean   @default(false)
 
   userId     Int

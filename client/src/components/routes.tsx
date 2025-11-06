@@ -2,7 +2,7 @@ import App from "../App";
 import ErrorPage from "./ErrorPage/ErrorPage.jsx";
 import Login from "./Authentication/Login/Login.jsx";
 import SignUp from "./Authentication/Sign Up/SignUp.jsx";
-// import RequireAuth from "./Authentication/RequireAuth.jsx";
+import RequireAuth from "./Authentication/RequireAuth.jsx";
 import Feed from "./Feed/Feed.js";
 import MySessions from "./ MySessions/MySessions.js";
 import AddSession from "./AddSession/AddSession.js";
@@ -12,7 +12,11 @@ import MyProfile from "./MyProfile/MyProfile.js";
 const routes = [
   {
     path: "/",
-    element: <App />,
+    element: (
+      <RequireAuth>
+        <App />
+      </RequireAuth>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {

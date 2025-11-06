@@ -6,7 +6,7 @@ import { GiSurferVan } from "react-icons/gi";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { FaUserEdit } from "react-icons/fa";
 import surfLogLogo from "../../assets/surflog_logo.png";
-import LogOut from "../Authentication/LogOut/LogOut";
+import LogOut from "../Authentication/LogOut/LogOutBtn";
 
 export default function Sidebar() {
   const location = useLocation();
