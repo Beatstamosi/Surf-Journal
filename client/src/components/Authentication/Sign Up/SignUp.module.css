@@ -78,14 +78,6 @@ h1 {
   text-align: center;
   color: var(--text-primary);
   font-weight: 800;
-  background: linear-gradient(
-    135deg,
-    var(--text-primary) 0%,
-    var(--text-secondary) 100%
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   position: relative;
 }
 
@@ -97,11 +89,6 @@ h1::after {
   transform: translateX(-50%);
   width: 60px;
   height: 4px;
-  background: linear-gradient(
-    135deg,
-    var(--text-primary) 0%,
-    var(--text-secondary) 100%
-  );
   border-radius: 2px;
 }
 
