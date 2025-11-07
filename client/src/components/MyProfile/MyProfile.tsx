@@ -8,6 +8,7 @@ import LogOutBtn from "../Authentication/LogOut/LogOutBtn";
 import { useMediaQuery } from "react-responsive";
 import { apiClient } from "../../utils/apiClient";
 import { supabase } from "../../utils/supabaseClient";
+import deleteProfilePictureFromStorage from "../../utils/deleteProfilePicture";
 
 export default function MyProfile() {
   const { user } = useAuth();
@@ -63,21 +64,8 @@ export default function MyProfile() {
         profilePictureUrl = signedUrlData.signedUrl;
 
         // Delete old profile picture to save storage
-        if (
-          user?.profilePicture &&
-          !user.profilePicture.includes("default_avatar.jpg")
-        ) {
-          try {
-            // Extract filename from old URL
-            const urlParts = user.profilePicture.split("/");
-            const oldFileName = urlParts[urlParts.length - 1].split("?")[0]; // Remove query params
-            await supabase.storage
-              .from("Profile Pictures")
-              .remove([oldFileName]);
-          } catch (deleteErr) {
-            console.warn("Could not delete old profile picture:", deleteErr);
-            // No throw - proceed with update even if deletion fails
-          }
+        if (user?.profilePicture) {
+          await deleteProfilePictureFromStorage(user.profilePicture);
         }
       }
 
@@ -112,6 +100,10 @@ export default function MyProfile() {
       const data = await apiClient("/user/delete", { method: "DELETE" });
 
       if (data.message === "User deleted successfully.") {
+        if (user?.profilePicture) {
+          await deleteProfilePictureFromStorage(user.profilePicture);
+        }
+
         logOutHandler(e);
       }
     } catch (err) {
