@@ -5,6 +5,7 @@ import { apiClient } from "../../utils/apiClient";
 import { boardBrands } from "../../utils/boardInfos/boardBrands";
 import { boardSizes } from "../../utils/boardInfos/boardSizes";
 import style from "./MyQuiver.module.css";
+import { MdDelete } from "react-icons/md";
 
 // TODO:
 // Add API endpoint deleteboard
@@ -59,6 +60,7 @@ export default function MyQuiver() {
           <div className={style.boardsGrid}>
             {boards.map((b) => (
               <div key={b.id} className={style.boardCard}>
+                <button className={style.deleteBoardBtn}><MdDelete /></button>
                 <h3 className={style.boardName}>{b.name}</h3>
                 <div className={style.boardDetails}>
                   <div className={style.boardDetail}>

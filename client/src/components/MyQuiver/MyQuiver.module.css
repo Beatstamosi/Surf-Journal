@@ -5,7 +5,11 @@
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  background: linear-gradient(to bottom, var(--bg-primary) 0%, var(--color-offwhite) 100%);
+  background: linear-gradient(
+    to bottom,
+    var(--bg-primary) 0%,
+    var(--color-offwhite) 100%
+  );
   box-sizing: border-box;
 }
 
@@ -20,7 +24,11 @@
   color: var(--text-primary);
   margin-bottom: 0.2rem;
   letter-spacing: -0.5px;
-  background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-sky) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-navy) 0%,
+    var(--color-sky) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -49,10 +57,11 @@
   border: 2px solid transparent;
   position: relative;
   overflow: hidden;
+  position: relative;
 }
 
 .boardCard::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -143,7 +152,7 @@
 }
 
 .formTitle::before {
-  content: '🏄';
+  content: "🏄";
   font-size: 1.75rem;
 }
 
@@ -200,7 +209,11 @@
 
 .submitButton {
   padding: 0.85rem 2rem;
-  background: linear-gradient(135deg, var(--color-sky) 0%, var(--color-blue) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-sky) 0%,
+    var(--color-blue) 100%
+  );
   color: white;
   border: none;
   border-radius: 10px;
@@ -214,7 +227,11 @@
 }
 
 .submitButton:hover {
-  background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-navy) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-blue) 0%,
+    var(--color-navy) 100%
+  );
   box-shadow: 0 4px 12px rgba(95, 168, 211, 0.3);
   transform: translateY(-2px);
 }
@@ -222,6 +239,36 @@
 .submitButton:active {
   transform: translateY(0);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.deleteBoardBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem;
+  margin: 0;
+  width: fit-content;
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  z-index: 10;
+}
+
+.deleteBoardBtn:hover {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: var(--color-danger);
+  transform: scale(1.1);
+}
+
+.deleteBoardBtn:active {
+  transform: scale(0.95);
 }
 
 /* Mobile Responsive */
@@ -250,6 +297,10 @@
 
   .submitButton {
     width: 100%;
+  }
+
+  .deleteBoardBtn {
+    color: var(--color-danger);
   }
 }
 
