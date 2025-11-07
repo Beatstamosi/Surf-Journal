@@ -1,59 +1,48 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../Authentication/useAuth";
-// import type { Board } from "../types/models";
-// import { apiClient } from "../../utils/apiClient";
+import type { Board } from "../types/models";
+import { apiClient } from "../../utils/apiClient";
 import { boardBrands } from "../../utils/boardInfos/boardBrands";
 import { boardSizes } from "../../utils/boardInfos/boardSizes";
 import style from "./MyQuiver.module.css";
 
-interface typeDummyBoards {
-  id: number;
-  brand: string;
-  size: string;
-  volume: number;
-  name: string;
-}
+// TODO:
+// Add API endpoint deleteboard
+// Add button to delete board
+// Add toggle to show / not show addBoard form
 
 export default function MyQuiver() {
   const { user } = useAuth();
-  const [boards, setBoards] = useState<typeDummyBoards[] | null>();
-  const [modelName, setmodelName] = useState("");
+  const [boards, setBoards] = useState<Board[] | null>();
+  const fetchBoards = async () => {
+    const data = await apiClient("/boards/user");
+    setBoards(data.boards);
+  };
 
   useEffect(() => {
-    const dummyBoards = [
-      {
-        id: 1,
-        brand: "Channel Islands / Al Merrick",
-        size: "5'10",
-        volume: 28.5,
-        name: "Happy Everyday",
-      },
-      {
-        id: 2,
-        brand: "Pyzel",
-        size: "6'2",
-        volume: 33.8,
-        name: "Ghost",
-      },
-      {
-        id: 3,
-        brand: "McTavish",
-        size: "9'4",
-        volume: 73.2,
-        name: "Fireball Evo 2",
-      },
-    ];
-
-    const fetchBoards =  () => {
-      // const data = await apiClient("/user/boards");
-      setBoards(dummyBoards);
-    };
     fetchBoards();
   }, [user?.id]);
 
-  const handleAddBoard = async (e: React.FormEvent) => {
+  const handleAddBoard = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(boards);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const brand = formData.get("brandList");
+    const size = formData.get("boardSize");
+    const volume = parseFloat(formData.get("volume") as string);
+    const name = formData.get("ModelName");
+
+    try {
+      await apiClient("/boards/user", {
+        method: "POST",
+        body: JSON.stringify({ brand, size, volume, name }),
+      });
+      form.reset();
+      await fetchBoards();
+    } catch (err) {
+      console.error("Error adding board", err);
+    }
   };
 
   return (
@@ -128,8 +117,6 @@ export default function MyQuiver() {
               type="text"
               name="ModelName"
               id="ModelName"
-              value={modelName}
-              onChange={(e) => setmodelName(e.target.value)}
               className={style.formInput}
               placeholder="e.g. Spitfire"
             />

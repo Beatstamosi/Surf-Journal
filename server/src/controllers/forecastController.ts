@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getSurfReport } from "./getSurfReport.js";
+import { getSurfReport } from "../utils/getSurfReport.js";
 import handleError from "../services/handleError.js";
 
 const getForeCast = async (req: Request, res: Response) => {

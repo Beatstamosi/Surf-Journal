@@ -1,6 +1,6 @@
 import axios from "axios";
-import { getSpot } from "./getSpot.js";
-import type { SurflineSpot } from "./getSpot.js";
+import { getSpot } from "../utils/getSpot.js";
+import type { SurflineSpot } from "../utils/getSpot.js";
 
 export interface SwellInfo {
   swell: string;
