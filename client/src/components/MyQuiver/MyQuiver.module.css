@@ -271,6 +271,67 @@
   transform: scale(0.95);
 }
 
+/* Toggle Add Board Button */
+.toggleAddBoardWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toggleAddBoardBtn {
+  padding: 0.9rem 2rem;
+  background: linear-gradient(135deg, var(--color-orange) 0%, #ff7700 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(255, 153, 0, 0.3);
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggleAddBoardBtn::before {
+  content: "+";
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.toggleAddBoardBtn:hover {
+  background: linear-gradient(135deg, #ff7700 0%, var(--color-orange) 100%);
+  box-shadow: 0 5px 15px rgba(255, 153, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.toggleAddBoardBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(255, 153, 0, 0.3);
+}
+
+/* Cancel state */
+.toggleAddBoardBtn.cancel {
+  background: var(--color-lightgray);
+  color: var(--text-primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.toggleAddBoardBtn.cancel::before {
+  content: "×";
+  font-size: 1.75rem;
+}
+
+.toggleAddBoardBtn.cancel:hover {
+  background: var(--color-gray);
+  color: white;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .quiverWrapper {
@@ -301,6 +362,11 @@
 
   .deleteBoardBtn {
     color: var(--color-danger);
+  }
+
+  .toggleAddBoardWrapper {
+    margin-bottom: 2rem;
+    margin-top: -2rem;
   }
 }
 

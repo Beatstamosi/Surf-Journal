@@ -13,6 +13,7 @@ import { MdDelete } from "react-icons/md";
 export default function MyQuiver() {
   const { user } = useAuth();
   const [boards, setBoards] = useState<Board[] | null>();
+  const [showAddBoard, setShowAddBoard] = useState(false);
   const fetchBoards = async () => {
     const data = await apiClient("/boards/user");
     setBoards(data.boards);
@@ -56,6 +57,12 @@ export default function MyQuiver() {
     } catch (err) {
       console.error("Error deleting board", err);
     }
+  };
+
+  const handleToggleAddBoard = (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    setShowAddBoard((prev) => !prev);
   };
 
   return (
@@ -107,77 +114,91 @@ export default function MyQuiver() {
         )}
       </div>
 
-      {/* Add Board Form */}
-      <div className={style.formSection}>
-        <h2 className={style.formTitle}>Add New Board</h2>
-        <form onSubmit={handleAddBoard} className={style.boardForm}>
-          <div className={style.formGroup}>
-            <label htmlFor="brandList" className={style.formLabel}>
-              Brand
-            </label>
-            <select
-              name="brandList"
-              id="brandList"
-              className={style.formSelect}
-            >
-              {boardBrands.map((brand) => (
-                <option key={brand} value={brand}>
-                  {brand}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className={style.formGroup}>
-            <label htmlFor="ModelName" className={style.formLabel}>
-              Model
-            </label>
-            <input
-              type="text"
-              name="ModelName"
-              id="ModelName"
-              className={style.formInput}
-              placeholder="e.g. Spitfire"
-            />
-          </div>
-
-          <div className={style.formGroup}>
-            <label htmlFor="boardSize" className={style.formLabel}>
-              Size
-            </label>
-            <select
-              name="boardSize"
-              id="boardSize"
-              className={style.formSelect}
-            >
-              {boardSizes.map((size) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className={style.formGroup}>
-            <label htmlFor="volume" className={style.formLabel}>
-              Volume (Liters)
-            </label>
-            <input
-              type="number"
-              name="volume"
-              id="volume"
-              step="0.1"
-              min={1}
-              defaultValue={30}
-              className={style.formInput}
-            />
-          </div>
-
-          <button type="submit" className={style.submitButton}>
-            Add to Quiver
-          </button>
-        </form>
+      {/* Toggle Board Form */}
+      <div className={style.toggleAddBoardWrapper}>
+        <button
+          className={`${style.toggleAddBoardBtn} ${
+            showAddBoard ? style.cancel : ""
+          }`}
+          onClick={handleToggleAddBoard}
+        >
+          {showAddBoard ? "Cancel" : "Add Board"}
+        </button>
       </div>
+
+      {/* Add Board Form */}
+      {showAddBoard && (
+        <div className={style.formSection}>
+          <h2 className={style.formTitle}>Add New Board</h2>
+          <form onSubmit={handleAddBoard} className={style.boardForm}>
+            <div className={style.formGroup}>
+              <label htmlFor="brandList" className={style.formLabel}>
+                Brand
+              </label>
+              <select
+                name="brandList"
+                id="brandList"
+                className={style.formSelect}
+              >
+                {boardBrands.map((brand) => (
+                  <option key={brand} value={brand}>
+                    {brand}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={style.formGroup}>
+              <label htmlFor="ModelName" className={style.formLabel}>
+                Model
+              </label>
+              <input
+                type="text"
+                name="ModelName"
+                id="ModelName"
+                className={style.formInput}
+                placeholder="e.g. Spitfire"
+              />
+            </div>
+
+            <div className={style.formGroup}>
+              <label htmlFor="boardSize" className={style.formLabel}>
+                Size
+              </label>
+              <select
+                name="boardSize"
+                id="boardSize"
+                className={style.formSelect}
+              >
+                {boardSizes.map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={style.formGroup}>
+              <label htmlFor="volume" className={style.formLabel}>
+                Volume (Liters)
+              </label>
+              <input
+                type="number"
+                name="volume"
+                id="volume"
+                step="0.1"
+                min={1}
+                defaultValue={30}
+                className={style.formInput}
+              />
+            </div>
+
+            <button type="submit" className={style.submitButton}>
+              Add to Quiver
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   );
 }
