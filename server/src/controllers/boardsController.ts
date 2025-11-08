@@ -46,4 +46,19 @@ const addBoardToUserQuiver = async (req: Request, res: Response) => {
   }
 };
 
-export { getBoardsOfUser, addBoardToUserQuiver };
+const deleteBoard = async (req: Request, res: Response) => {
+  const boardId = req.body.boardId;
+
+  try {
+    await prisma.board.delete({
+      where: {
+        id: boardId,
+      },
+    });
+    res.sendStatus(204);
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+export { getBoardsOfUser, addBoardToUserQuiver, deleteBoard };

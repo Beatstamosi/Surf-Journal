@@ -8,8 +8,6 @@ import style from "./MyQuiver.module.css";
 import { MdDelete } from "react-icons/md";
 
 // TODO:
-// Add API endpoint deleteboard
-// Add button to delete board
 // Add toggle to show / not show addBoard form
 
 export default function MyQuiver() {
@@ -46,6 +44,20 @@ export default function MyQuiver() {
     }
   };
 
+  const handleDeleteBoard = async (e: React.MouseEvent, boardId: number) => {
+    e.preventDefault();
+
+    try {
+      await apiClient("/boards", {
+        method: "DELETE",
+        body: JSON.stringify({ boardId }),
+      });
+      await fetchBoards();
+    } catch (err) {
+      console.error("Error deleting board", err);
+    }
+  };
+
   return (
     <div className={style.quiverWrapper}>
       {/* Header */}
@@ -60,7 +72,12 @@ export default function MyQuiver() {
           <div className={style.boardsGrid}>
             {boards.map((b) => (
               <div key={b.id} className={style.boardCard}>
-                <button className={style.deleteBoardBtn}><MdDelete /></button>
+                <button
+                  className={style.deleteBoardBtn}
+                  onClick={(e) => handleDeleteBoard(e, b.id)}
+                >
+                  <MdDelete />
+                </button>
                 <h3 className={style.boardName}>{b.name}</h3>
                 <div className={style.boardDetails}>
                   <div className={style.boardDetail}>

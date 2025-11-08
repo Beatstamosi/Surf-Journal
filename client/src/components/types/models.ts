@@ -71,7 +71,7 @@ export interface Session {
   startTime?: string | null;
   description?: string | null;
   sessionMatchForecast?: string | null;
-  image?: string | null; // base64 or URL
+  image?: string | null; // URL
   shared: boolean;
   userId: number;
   forecastId?: number | null;
