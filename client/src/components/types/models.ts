@@ -38,21 +38,26 @@ export interface Quiver {
 }
 
 export interface Forecast {
-  id: number;
   spotName: string;
-  region?: string | null;
-  surflineSpotId?: string | null;
-  description?: string | null;
-  size?: string | null;
-  waveEnergy?: string | null;
-  date: string; // ISO date
-  tideHeight?: string | null;
-  tideType?: string | null;
-  windDirection?: string | null;
-  windSpeed?: string | null;
-  windGust?: string | null;
-  swells?: Swell[];
-  sessions?: Session[];
+  region: string;
+  sessionStart: string;
+  size: string;
+  description: string;
+  waveEnergy: string;
+  rating: {
+    value: number;
+    description: string;
+  };
+  swells: Swell[];
+  wind?: {
+    speed: string;
+    direction: string;
+    gust?: string;
+  };
+  tide?: {
+    height: string;
+    type: string;
+  };
 }
 
 export interface Swell {
