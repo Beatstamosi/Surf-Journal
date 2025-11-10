@@ -112,7 +112,6 @@ function calculateEnhancedRating(
   const spotAdjustment = getSpotSpecificAdjustment(
     spotName,
     avgWaveHeight,
-    primarySwell
   );
   rating += spotAdjustment;
 
@@ -146,7 +145,6 @@ function calculateBaseRatingFromWaveHeight(waveHeight: number): number {
 function getSpotSpecificAdjustment(
   spotName: string,
   waveHeight: number,
-  primarySwell: any
 ): number {
   const normalizedName = spotName.toLowerCase();
 
@@ -159,18 +157,6 @@ function getSpotSpecificAdjustment(
   if (normalizedName.includes("point") || normalizedName.includes("reef")) {
     if (waveHeight < 2) return -0.2;
     if (waveHeight > 3) return 0.1;
-  }
-
-  // World-class spots get slight boost when conditions align
-  const worldClassSpots = [
-    "pipeline",
-    "teahupoo",
-    "jaws",
-    "waimea",
-    "supertubos",
-  ];
-  if (worldClassSpots.some((spot) => normalizedName.includes(spot))) {
-    if (waveHeight > 4 && primarySwell?.period > 14) return 0.3;
   }
 
   return 0;

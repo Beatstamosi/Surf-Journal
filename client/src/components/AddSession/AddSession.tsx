@@ -57,7 +57,7 @@ export default function AddSession() {
 
   if (!forecast) {
     return (
-      <div className={style.container}>
+      <>
         <div className={style.header}>
           <h1 className={style.title}>Start New Session</h1>
           <p className={style.subtitle}>Get the forecast and log your surf</p>
@@ -117,13 +117,13 @@ export default function AddSession() {
             </button>
           </div>
         </form>
-      </div>
+      </>
     );
   }
 
   if (forecast) {
     return (
-      <div className={style.container}>
+      <>
         <div className={style.header}>
           <h1 className={style.title}>Log Your Session</h1>
           <p className={style.subtitle}>
@@ -225,7 +225,7 @@ export default function AddSession() {
             </div>
           </div>
         </form>
-      </div>
+      </>
     );
   }
 }

@@ -1,17 +1,5 @@
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  background: var(--bg-primary);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .header {
   text-align: center;
-  margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 2px solid var(--color-lightgray);
 }
@@ -51,21 +39,28 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  justify-self: center;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  width: 100%;
+  box-shadow: none; /* IMPORTANT: Something overwrites this setting */
+  max-width: 100%;
+  box-sizing: border-box;
+  flex: 1;
+  border-radius: 0px; /* IMPORTANT: Something overwrites this setting */
 }
 
 .sessionDetails {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  width: 100%;
 }
 
 .inputGroup {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .label {
@@ -86,6 +81,8 @@
   background: var(--bg-primary);
   color: var(--text-primary);
   transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .input:focus,
@@ -126,6 +123,8 @@
   background: var(--bg-secondary);
   border-radius: 12px;
   border: 1px solid var(--color-lightgray);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .toggleItem {
@@ -148,6 +147,7 @@
   display: inline-block;
   width: 44px;
   height: 24px;
+  flex-shrink: 0;
 }
 
 .toggleInput {
@@ -215,6 +215,7 @@
   display: flex;
   justify-content: center;
   margin-top: 1rem;
+  width: 100%;
 }
 
 .primaryButton {
@@ -249,17 +250,16 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-  .container {
-    padding: 1rem;
-    max-width: 650px;
+  .formAddSession {
+    width: 100%;
+    max-width: 100%;
+    gap: 1.5rem;
+    align-items: stretch;
+    margin-bottom: 3.5rem;
   }
 
   .title {
     font-size: 1.5rem;
-  }
-
-  .form {
-    gap: 1.5rem;
   }
 
   .sessionDetails {
@@ -273,16 +273,17 @@
   .toggleLabel {
     font-size: 0.875rem;
   }
+
+  .inputGroup {
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
-  .container {
-    padding: 0.75rem;
-  }
-
-  .header {
-    margin-bottom: 1.5rem;
-  }
+  /* .header {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+  } */
 
   .input,
   .select,
@@ -294,5 +295,27 @@
   .primaryButton {
     padding: 0.75rem 1.5rem;
     width: 100%;
+  }
+
+  .formAddSession {
+    width: 100%;
+    max-width: 100%;
+    gap: 1rem;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .subtitle {
+    font-size: 0.875rem;
+  }
+
+  .sessionDetails {
+    gap: 1rem;
+  }
+
+  .toggleGroup {
+    padding: 0.75rem;
   }
 }

@@ -5,6 +5,7 @@
   border-top: 2px solid var(--color-navy);
   height: 40px;
   width: 100%;
+  background-color: var(--coor-white);
 }
 
 .link {

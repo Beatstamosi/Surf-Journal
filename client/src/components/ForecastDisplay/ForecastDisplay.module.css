@@ -6,6 +6,7 @@
   border-radius: 12px;
   box-shadow: var(--shadow-light);
   border: 1px solid var(--color-lightgray);
+  box-sizing: border-box;
 }
 
 /* Header with Spot Info and Rating */
@@ -13,6 +14,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 1rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid var(--color-lightgray);
@@ -20,6 +22,7 @@
 
 .spotInfo {
   flex: 1;
+  min-width: 0;
 }
 
 .spotName {
@@ -45,6 +48,7 @@
   letter-spacing: 0.05em;
   border: 1px solid;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* Enhanced rating system using your brand colors */
@@ -148,10 +152,12 @@
   width: 2rem;
   text-align: center;
   color: var(--color-blue);
+  flex-shrink: 0;
 }
 
 .conditionData {
   flex: 1;
+  min-width: 0;
 }
 
 .conditionValue {
@@ -174,9 +180,8 @@
   margin-top: 1.5rem;
   border: 1px solid var(--color-lightgray);
   border-radius: 8px;
-  overflow-y: scroll;
+  overflow: hidden;
   background: var(--bg-primary);
-  height: fit-content;
 }
 
 .accordionHeader {
@@ -200,6 +205,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .sectionTitle {
@@ -226,6 +232,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .accordionIconOpen {
@@ -234,13 +241,14 @@
 
 .accordionContent {
   max-height: 0;
-  overflow: auto;
+  overflow: hidden;
   transition: max-height 0.3s ease;
   background: var(--bg-secondary);
 }
 
 .accordionContentOpen {
-  max-height: 500px; /* Adjust based on your content */
+  max-height: 800px;
+  overflow: auto;
 }
 
 /* Swells Grid inside Accordion */
@@ -286,6 +294,7 @@
   align-items: center;
   padding: 0.5rem 0;
   border-bottom: 1px solid var(--color-lightgray);
+  gap: 0.5rem;
 }
 
 .swellRow:last-child {
@@ -313,36 +322,175 @@
 
 /* Mobile Responsive Updates */
 @media (max-width: 768px) {
+  .forecastContainer {
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 0;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .ratingBadge {
+    align-self: flex-start;
+  }
+
+  .spotName {
+    font-size: 1.25rem;
+  }
+
+  .primaryGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .waveCard {
+    order: -1;
+  }
+
+  .waveContent {
+    padding: 1.25rem 1rem;
+  }
+
+  .waveHeight {
+    font-size: 2rem;
+  }
+
+  .conditionsRow {
+    gap: 0.75rem;
+  }
+
+  .conditionItem {
+    padding: 0.875rem;
+  }
+
+  .conditionValue {
+    font-size: 1rem;
+  }
+
   .swellsGrid {
     grid-template-columns: 1fr;
     padding: 1rem;
-    gap: 0.75rem;
+    gap: 1rem;
   }
 
   .accordionHeader {
-    padding: 0.875rem 1rem;
+    padding: 1rem;
   }
 
   .accordionTitle {
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
   .swellCount {
     font-size: 0.7rem;
     padding: 0.2rem 0.4rem;
   }
+
+  .accordionContentOpen {
+    max-height: 1000px;
+  }
 }
 
 @media (max-width: 480px) {
-  .swellsGrid {
+  .forecastContainer {
+    padding: 0.875rem;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.875rem;
+  }
+
+  .spotName {
+    font-size: 1.125rem;
+  }
+
+  .region {
+    font-size: 0.8rem;
+  }
+
+  .ratingBadge {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+  }
+
+  .primaryGrid {
+    gap: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .waveContent {
+    padding: 1rem;
+  }
+
+  .waveHeight {
+    font-size: 1.75rem;
+  }
+
+  .waveDescription {
+    font-size: 0.8rem;
+  }
+
+  .conditionItem {
     padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .conditionIcon {
+    font-size: 1.125rem;
+    width: 1.5rem;
+  }
+
+  .conditionValue {
+    font-size: 0.95rem;
+  }
+
+  .conditionLabel {
+    font-size: 0.7rem;
+  }
+
+  .swellsSection {
+    margin-top: 1rem;
+    border-radius: 8px;
+  }
+
+  .swellsGrid {
+    padding: 0.875rem;
+    gap: 0.875rem;
   }
 
   .accordionHeader {
-    padding: 0.75rem;
+    padding: 0.875rem;
   }
 
   .sectionTitle {
+    font-size: 0.8rem;
+  }
+
+  .swellHeader {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.8rem;
+  }
+
+  .swellDetails {
+    padding: 0.875rem;
+  }
+
+  .swellRow {
+    padding: 0.4rem 0;
+  }
+
+  .swellLabel {
+    font-size: 0.7rem;
+  }
+
+  .swellValue {
     font-size: 0.8rem;
   }
 }
