@@ -7,9 +7,6 @@ import { boardSizes } from "../../utils/boardInfos/boardSizes";
 import style from "./MyQuiver.module.css";
 import { MdDelete } from "react-icons/md";
 
-// TODO:
-// Add toggle to show / not show addBoard form
-
 export default function MyQuiver() {
   const { user } = useAuth();
   const [boards, setBoards] = useState<Board[] | null>();
