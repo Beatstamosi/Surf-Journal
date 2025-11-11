@@ -4,9 +4,8 @@ import { apiClient } from "../../utils/apiClient";
 import style from "./AddSession.module.css";
 import ForecastDisplay from "../ForecastDisplay/ForecastDisplay";
 import { useNavigate } from "react-router-dom";
-
-// TODO: Add session API endpoint - submit session
-// allow image upload for session
+import uploadImageToSupaBase from "../../utils/uploadImageToSupaBase";
+import { useAuth } from "../Authentication/useAuth";
 
 export default function AddSession() {
   const [spotName, setSpotName] = useState("");
@@ -16,7 +15,9 @@ export default function AddSession() {
   const [shareInFeed, setShareInFeed] = useState(false);
   const [sessionAddedConfirmation, setSessionAddedConfirmation] =
     useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   // No need for boards if there is no forecast
   useEffect(() => {
@@ -53,23 +54,34 @@ export default function AddSession() {
   const handlerSaveSession = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    const sessionMatchForecast = formData.get("sessionMatchForecasts");
-    const description = formData.get("sessionNotes");
-    const boardId = formData.get("chooseBoard");
-
     try {
+      let imageUrl;
+      const formData = new FormData(e.currentTarget);
+      const formValues = {
+        sessionMatchForecast: formData.get("sessionMatchForecast") as string,
+        description: formData.get("sessionNotes") as string,
+        boardId: formData.get("chooseBoard") as string,
+      };
+
+      if (selectedFile) {
+        imageUrl = await uploadImageToSupaBase(
+          selectedFile,
+          user?.id,
+          "Session Images",
+          forecast?.sessionStart
+        );
+      }
+
       await apiClient("/session", {
         method: "POST",
         body: JSON.stringify({
           forecast,
           shareInFeed,
-          sessionMatchForecast,
-          description,
-          boardId,
+          ...formValues,
+          image: imageUrl,
         }),
       });
+
       showConfirmation();
     } catch (err) {
       console.error("Error adding session: ", err);
@@ -92,7 +104,12 @@ export default function AddSession() {
     setShareInFeed(false);
   };
 
-  console.log(forecast);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
 
   if (sessionAddedConfirmation) {
     return (
@@ -228,6 +245,16 @@ export default function AddSession() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div className={style.inputGroup}>
+              <label htmlFor="sessionUpload">Upload Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                id="sessionUpload"
+                onChange={handleFileChange}
+              />
             </div>
 
             <div className={style.toggleGroup}>

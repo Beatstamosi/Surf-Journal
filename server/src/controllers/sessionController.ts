@@ -9,7 +9,7 @@ const addSession = async (req: Request, res: Response) => {
     shareInFeed,
     sessionMatchForecast,
     description,
-    image,
+    sessionImageUrl,
     boardId,
   } = req.body;
   const user = req.user;
@@ -28,7 +28,7 @@ const addSession = async (req: Request, res: Response) => {
           startTime: savedForecast.date,
           description,
           sessionMatchForecast,
-          image: image ? image : null,
+          image: sessionImageUrl ? sessionImageUrl : null,
           shared: shareInFeed,
           userId: user.id,
           forecastId: savedForecast.id,

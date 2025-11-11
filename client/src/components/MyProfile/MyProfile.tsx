@@ -7,8 +7,8 @@ import useLogOut from "../Authentication/LogOut/useLogOut";
 import LogOutBtn from "../Authentication/LogOut/LogOutBtn";
 import { useMediaQuery } from "react-responsive";
 import { apiClient } from "../../utils/apiClient";
-import { supabase } from "../../utils/supabaseClient";
 import deleteProfilePictureFromStorage from "../../utils/deleteProfilePicture";
+import uploadImageToSupaBase from "../../utils/uploadImageToSupaBase";
 
 export default function MyProfile() {
   const { user } = useAuth();
@@ -35,33 +35,11 @@ export default function MyProfile() {
 
       // Upload new profile picture if selected
       if (selectedFile) {
-        const fileExt = selectedFile.name.split(".").pop();
-        const fileName = `${user?.id}-${Date.now()}.${fileExt}`;
-        const filePath = `${fileName}`;
-
-        // Upload to Supabase Storage
-        const { error: uploadError } = await supabase.storage
-          .from("Profile Pictures")
-          .upload(filePath, selectedFile, {
-            cacheControl: "3600",
-            upsert: false,
-          });
-
-        if (uploadError) {
-          throw new Error(`Upload failed: ${uploadError.message}`);
-        }
-
-        // Create signed URL for private bucket (10 year expiry)
-        const { data: signedUrlData, error: signedError } =
-          await supabase.storage
-            .from("Profile Pictures")
-            .createSignedUrl(filePath, 60 * 60 * 24 * 365 * 10); // 10 years
-
-        if (signedError) {
-          throw new Error(`Signed URL creation failed: ${signedError.message}`);
-        }
-
-        profilePictureUrl = signedUrlData.signedUrl;
+        profilePictureUrl = await uploadImageToSupaBase(
+          selectedFile,
+          user?.id,
+          "Profile Pictures"
+        );
 
         // Delete old profile picture to save storage
         if (user?.profilePicture) {
