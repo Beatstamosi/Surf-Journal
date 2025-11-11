@@ -60,7 +60,7 @@ export default function AddSession() {
     const boardId = formData.get("chooseBoard");
 
     try {
-      await apiClient("/session/user", {
+      await apiClient("/session", {
         method: "POST",
         body: JSON.stringify({
           spotName,
@@ -93,6 +93,8 @@ export default function AddSession() {
     setStartTimeSession("");
     setShareInFeed(false);
   };
+
+  console.log(startTimeSession);
 
   if (sessionAddedConfirmation) {
     return (

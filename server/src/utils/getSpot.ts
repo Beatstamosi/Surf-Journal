@@ -19,7 +19,7 @@ const spotCache = new Map<string, SurflineSpot>();
 export async function getSpot(spot: string): Promise<SurflineSpot | null> {
   const key = spot.toLowerCase();
 
-  // ✅ Check cache first
+  // Check cache first
   if (spotCache.has(key)) {
     return spotCache.get(key)!;
   }

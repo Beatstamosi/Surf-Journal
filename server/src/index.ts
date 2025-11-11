@@ -9,6 +9,7 @@ import "./config/passport.js";
 import forecastRouter from "./routes/forecast.js";
 import userRouter from "./routes/user.js";
 import boardsRouter from "./routes/boards.js";
+import sessionRouter from "./routes/session.js";
 
 // Load environment variables FIRST
 dotenv.config();
@@ -39,6 +40,7 @@ app.use("/auth", authRouter);
 app.use("/forecast", forecastRouter);
 app.use("/user", userRouter);
 app.use("/boards", boardsRouter);
+app.use("/session", sessionRouter);
 
 // Serve static files in production
 if (process.env.NODE_ENV === "production") {
