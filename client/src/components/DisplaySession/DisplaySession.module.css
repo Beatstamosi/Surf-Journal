@@ -1,0 +1,368 @@
+.sessionContainer {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  border: 1px solid var(--color-lightgray);
+  box-shadow: var(--shadow-light);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+/* Session Header */
+.sessionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--color-lightgray);
+  background: var(--bg-secondary);
+}
+
+.sessionInfo {
+  flex: 1;
+}
+
+.spotName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.025em;
+}
+
+.sessionMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.date {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* Board Display - More Prominent */
+.boardDisplay {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--bg-primary);
+  border-radius: 8px;
+  border: 1px solid var(--color-lightgray);
+}
+
+.boardIcon {
+  font-size: 1.25rem;
+}
+
+.boardDetails {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Action Buttons - More Modern & Clean */
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+/* Toggle Switch */
+.toggleItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.toggleContainer {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toggleInput {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.toggleSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-gray);
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+.toggleSlider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.toggleInput:checked + .toggleSlider {
+  background-color: var(--color-success);
+}
+
+.toggleInput:focus + .toggleSlider {
+  box-shadow: 0 0 1px var(--color-success);
+}
+
+.toggleInput:checked + .toggleSlider:before {
+  transform: translateX(20px);
+}
+
+/* Icon Buttons */
+.iconButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border: 1px solid var(--color-lightgray);
+  border-radius: 6px;
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.iconButton:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-light);
+}
+
+/* Session Content */
+.sessionContent {
+  padding: 1.5rem;
+}
+
+/* Forecast Summary */
+.forecastSummary {
+  margin-bottom: 1.5rem;
+}
+
+.forecastGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.forecastItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.forecastLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.forecastValue {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Session Image */
+.sessionImage {
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 300px;
+}
+
+.sessionImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Session Notes - Left Aligned */
+.sessionNotes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  margin-top: 2rem;
+}
+
+.notesSection {
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  border-left: 3px solid var(--color-sky);
+  text-align: left; /* Ensure left alignment */
+}
+
+.notesTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.5rem 0;
+  text-align: left; /* Left align title */
+}
+
+.notesText {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin: 0;
+  white-space: pre-line;
+  text-align: left; /* Left align text */
+}
+
+/* Swell Summary */
+.swellSummary {
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  border-left: 3px solid var(--color-info);
+}
+
+.swellTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.75rem 0;
+  text-align: left;
+}
+
+.swellList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.swellItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-lightgray);
+}
+
+.swellItem:last-child {
+  border-bottom: none;
+}
+
+.swellName {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.swellDetails {
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* On Desktop adjust width */
+@media (min-width: 769px) {
+  .sessionContainer {
+    width: 800px;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .sessionHeader {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .actionButtons {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .forecastGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .boardDisplay {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sessionContainer {
+    margin-bottom: 1rem;
+  }
+
+  .sessionHeader,
+  .sessionContent {
+    padding: 1rem;
+  }
+
+  .spotName {
+    font-size: 1.25rem;
+  }
+
+  .forecastGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .iconButtons {
+    align-self: stretch;
+    justify-content: space-around;
+  }
+
+  .iconButton {
+    flex: 1;
+  }
+}

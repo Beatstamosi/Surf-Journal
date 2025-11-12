@@ -37,7 +37,7 @@ export interface Quiver {
   board?: Board;
 }
 
-export interface Forecast {
+export interface ForecastReport {
   spotName: string;
   region: string;
   sessionStart: string;
@@ -60,6 +60,24 @@ export interface Forecast {
   };
 }
 
+export interface ForecastFromAPI {
+  id?: number;
+  spotName: string;
+  region?: string;
+  surflineSpotId?: string;
+  description?: string;
+  size: string;
+  waveEnergy?: string;
+  date: string | Date;
+  tideHeight?: string;
+  tideType?: string;
+  windDirection?: string;
+  windSpeed?: string;
+  windGust?: string;
+  swells?: Swell[];
+  sessions?: Session[];
+}
+
 export interface Swell {
   id: number;
   forecastId: number;
@@ -73,7 +91,7 @@ export interface Swell {
 export interface Session {
   id: number;
   date: string;
-  startTime?: string | null;
+  startTime: string;
   description?: string | null;
   sessionMatchForecast?: string | null;
   image?: string | null; // URL
@@ -82,7 +100,7 @@ export interface Session {
   forecastId?: number | null;
   boardId?: number | null;
   user?: User;
-  forecast?: Forecast;
+  forecast?: ForecastFromAPI;
   board?: Board;
   post?: Post;
 }

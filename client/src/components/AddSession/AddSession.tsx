@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Forecast, Board } from "../types/models";
+import type { ForecastReport, Board } from "../types/models";
 import { apiClient } from "../../utils/apiClient";
 import style from "./AddSession.module.css";
 import ForecastDisplay from "../ForecastDisplay/ForecastDisplay";
@@ -10,7 +10,7 @@ import { useAuth } from "../Authentication/useAuth";
 export default function AddSession() {
   const [spotName, setSpotName] = useState("");
   const [startTimeSession, setStartTimeSession] = useState("");
-  const [forecast, setForecast] = useState<Forecast | null>();
+  const [forecast, setForecast] = useState<ForecastReport | null>();
   const [boards, setBoards] = useState<Board[] | null>();
   const [shareInFeed, setShareInFeed] = useState(false);
   const [sessionAddedConfirmation, setSessionAddedConfirmation] =
@@ -72,7 +72,7 @@ export default function AddSession() {
         );
       }
 
-      await apiClient("/session", {
+      await apiClient("/sessions", {
         method: "POST",
         body: JSON.stringify({
           forecast,

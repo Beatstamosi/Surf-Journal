@@ -55,4 +55,29 @@ const addSession = async (req: Request, res: Response) => {
   }
 };
 
-export { addSession };
+const getAllUserSessions = async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+
+  try {
+    if (!userId) throw new Error("Missing userId");
+    const sessions = await prisma.session.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        forecast: {
+          include: {
+            swells: true,
+          },
+        },
+        board: true,
+      },
+    });
+
+    res.status(201).json({ sessions });
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+export { addSession, getAllUserSessions };

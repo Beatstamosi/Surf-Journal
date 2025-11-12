@@ -1,10 +1,9 @@
-// ForecastDisplay.tsx
 import { useState } from "react";
-import type { Forecast } from "../types/models";
+import type { ForecastReport } from "../types/models";
 import style from "./ForecastDisplay.module.css";
 
 interface ForecastDisplayProps {
-  forecast: Forecast;
+  forecast: ForecastReport;
 }
 
 export default function ForecastDisplay({ forecast }: ForecastDisplayProps) {
