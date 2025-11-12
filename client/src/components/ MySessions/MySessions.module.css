@@ -101,6 +101,12 @@
   font-size: 0.875rem;
 }
 
+@media (min-width: 769px) {
+  .container {
+    width: 1200px;
+  }
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .container {

@@ -1,10 +1,15 @@
 .sessionContainer {
   background: var(--bg-primary);
-  border-radius: 12px;
+  border-radius: 16px;
   border: 1px solid var(--color-lightgray);
-  box-shadow: var(--shadow-light);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   overflow: hidden;
-  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.sessionContainer:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
 }
 
 /* Session Header */
@@ -12,87 +17,73 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 1.5rem;
-  border-bottom: 1px solid var(--color-lightgray);
-  background: var(--bg-secondary);
+  padding: 1rem;
+  background: linear-gradient(
+    180deg,
+    var(--bg-secondary) 0%,
+    var(--bg-primary) 100%
+  );
 }
 
 .sessionInfo {
   flex: 1;
+  min-width: 0;
 }
 
 .spotName {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.125rem;
+  font-weight: 800;
   color: var(--text-primary);
   margin: 0 0 0.5rem 0;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
 }
 
 .sessionMeta {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.25rem;
 }
 
 .date {
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-secondary);
 }
 
-/* Board Display - More Prominent */
-.boardDisplay {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  background: var(--bg-primary);
-  border-radius: 8px;
-  border: 1px solid var(--color-lightgray);
-}
-
-.boardIcon {
-  font-size: 1.25rem;
-}
-
-.boardDetails {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-/* Action Buttons - More Modern & Clean */
+/* Action Buttons */
 .actionButtons {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
   flex-shrink: 0;
 }
 
 /* Toggle Switch */
 .toggleItem {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
 }
 
 .toggleLabel {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-primary);
-  font-size: 0.875rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .toggleContainer {
   position: relative;
   display: inline-block;
-  width: 44px;
-  height: 24px;
+  width: 40px;
+  height: 22px;
   flex-shrink: 0;
 }
 
@@ -110,21 +101,22 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--color-gray);
+  background-color: var(--color-lightgray);
   transition: 0.3s;
-  border-radius: 24px;
+  border-radius: 22px;
 }
 
 .toggleSlider:before {
   position: absolute;
   content: "";
-  height: 18px;
-  width: 18px;
+  height: 16px;
+  width: 16px;
   left: 3px;
   bottom: 3px;
   background-color: white;
   transition: 0.3s;
   border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .toggleInput:checked + .toggleSlider {
@@ -132,11 +124,11 @@
 }
 
 .toggleInput:focus + .toggleSlider {
-  box-shadow: 0 0 1px var(--color-success);
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
 }
 
 .toggleInput:checked + .toggleSlider:before {
-  transform: translateX(20px);
+  transform: translateX(18px);
 }
 
 /* Icon Buttons */
@@ -151,162 +143,204 @@
   justify-content: center;
   width: 50px;
   height: 50px;
-  border: 1px solid var(--color-lightgray);
-  border-radius: 6px;
-  background: var(--bg-primary);
+  border: none;
+  border-radius: 8px;
+  background: var(--bg-secondary);
   color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 
 .iconButton:hover {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-light);
+  background: var(--color-sky);
+  color: white;
+  transform: scale(1.05);
+}
+
+.iconButton:active {
+  transform: scale(0.95);
 }
 
 /* Session Content */
 .sessionContent {
-  padding: 1.5rem;
-}
-
-/* Forecast Summary */
-.forecastSummary {
-  margin-bottom: 1.5rem;
-}
-
-.forecastGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
-}
-
-.forecastItem {
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-}
-
-.forecastLabel {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.forecastValue {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-primary);
+  gap: 1rem;
 }
 
 /* Session Image */
 .sessionImage {
-  margin: 1.5rem 0;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  max-height: 300px;
+  max-height: 400px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .sessionImage img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-/* Session Notes - Left Aligned */
+/* Forecast Summary - Card Style */
+.forecastSummary {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1.25rem;
+  border: 1px solid var(--color-lightgray);
+}
+
+.forecastGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.875rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-lightgray);
+}
+
+.forecastGrid:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.forecastItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.forecastLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.forecastValue {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+/* Swell Info - Inline with Forecast */
+.swellItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.swellName,
+.forecastMatchTitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.forecastMatchTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.swellDetails {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Session Notes - Modern Clean Style */
 .sessionNotes {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-bottom: 1.5rem;
-  margin-top: 2rem;
 }
 
 .notesSection {
-  padding: 1rem;
-  background: var(--bg-secondary);
-  border-radius: 8px;
-  border-left: 3px solid var(--color-sky);
-  text-align: left; /* Ensure left alignment */
+  background: var(--bg-primary);
+  border-radius: 12px;
+  border: 1px solid var(--color-lightgray);
+  padding: 0;
+  overflow: hidden;
 }
 
 .notesTitle {
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 0 0 0.5rem 0;
-  text-align: left; /* Left align title */
-}
-
-.notesText {
-  font-size: 0.875rem;
-  color: var(--text-primary);
-  line-height: 1.5;
+  letter-spacing: 0.08em;
   margin: 0;
-  white-space: pre-line;
-  text-align: left; /* Left align text */
-}
-
-/* Swell Summary */
-.swellSummary {
-  padding: 1rem;
+  padding: 0.875rem 1.25rem;
   background: var(--bg-secondary);
-  border-radius: 8px;
-  border-left: 3px solid var(--color-info);
-}
-
-.swellTitle {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 0 0 0.75rem 0;
+  border-bottom: 1px solid var(--color-lightgray);
   text-align: left;
 }
 
-.swellList {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.swellItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--color-lightgray);
-}
-
-.swellItem:last-child {
-  border-bottom: none;
-}
-
-.swellName {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.swellDetails {
-  font-size: 0.75rem;
+.notesForecast {
+  font-size: 0.9rem;
   color: var(--text-primary);
-  font-weight: 500;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0.25rem;
+  white-space: pre-line;
+  font-weight: 400;
+  text-align: left;
 }
 
-/* On Desktop adjust width */
+.notesText {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin: 0;
+  padding: 1.25rem;
+  white-space: pre-line;
+  font-weight: 400;
+  text-align: left;
+}
+
+.notesText:empty::before {
+  content: "No notes added";
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Board Display - Subtle Info Style */
+.boardDisplay {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--color-lightgray);
+}
+
+.boardIcon {
+  font-size: 1.25rem;
+}
+
+.boardDetails {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+/* Desktop Width Control */
 @media (min-width: 769px) {
   .sessionContainer {
-    width: 800px;
+    max-width: 800px;
   }
 }
 
@@ -315,27 +349,26 @@
   .sessionHeader {
     flex-direction: column;
     gap: 1rem;
-    align-items: stretch;
   }
 
   .actionButtons {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
     width: 100%;
+    justify-content: space-between;
   }
 
   .forecastGrid {
     grid-template-columns: 1fr 1fr;
+    gap: 1rem;
   }
 
-  .boardDisplay {
-    padding: 0.5rem;
+  .spotName {
+    font-size: 1.35rem;
   }
 }
 
 @media (max-width: 480px) {
   .sessionContainer {
+    border-radius: 12px;
     margin-bottom: 1rem;
   }
 
@@ -345,24 +378,55 @@
   }
 
   .spotName {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
   }
 
   .forecastGrid {
     grid-template-columns: 1fr;
-  }
-
-  .actionButtons {
-    flex-direction: column;
     gap: 1rem;
   }
 
+  .forecastSummary {
+    padding: 1rem;
+  }
+
+  .actionButtons {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
   .iconButtons {
-    align-self: stretch;
-    justify-content: space-around;
+    flex: 1;
+    justify-content: flex-end;
   }
 
   .iconButton {
-    flex: 1;
+    width: 34px;
+    height: 34px;
+    font-size: 0.9rem;
+  }
+
+  .boardDisplay {
+    padding: 0.875rem 1rem;
+  }
+
+  .notesTitle {
+    font-size: 0.65rem;
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
+
+  .notesText {
+    font-size: 0.85rem;
+    padding: 1rem;
+    text-align: left;
+  }
+
+  .swellItem {
+    gap: 0.375rem;
+  }
+
+  .swellDetails {
+    font-size: 0.9rem;
   }
 }

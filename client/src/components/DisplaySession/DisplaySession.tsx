@@ -4,9 +4,6 @@ import style from "./DisplaySession.module.css";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-// TODO:
-// add share functionality
-
 interface DisplaySessionProps {
   session: Session;
 }
@@ -33,8 +30,6 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
     return size?.replace("Surf: ", "") || "N/A";
   };
 
-  console.log(session);
-
   return (
     <div className={style.sessionContainer}>
       {/* Session Header */}
@@ -49,7 +44,7 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
           </div>
         </div>
 
-        {/* Action Buttons - More Subtle */}
+        {/* Action Buttons */}
         <div className={style.actionButtons}>
           <div className={style.toggleItem}>
             <label
@@ -89,7 +84,7 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
           </div>
         )}
 
-        {/* Forecast Summary */}
+        {/* Forecast Summary with Swells Integrated */}
         {forecast && (
           <div className={style.forecastSummary}>
             <div className={style.forecastGrid}>
@@ -118,30 +113,38 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
                 </span>
               </div>
             </div>
-          </div>
-        )}
 
-        {/* Quick Swell Info */}
-        {forecast?.swells?.slice(0, 2).map((swell, index) => (
-          <div key={index} className={style.swellItem}>
-            <span className={style.swellName}>{swell.name}</span>
-            <span className={style.swellDetails}>
-              {parseFloat(swell.height?.split(":")[1] || "0").toFixed(1)}m •{" "}
-              {swell.period?.split(":")[1]?.trim()} •
-              {parseFloat(swell.direction?.split(":")[1] || "0").toFixed(0)}°
-            </span>
-          </div>
-        ))}
-
-        {/* Session Notes */}
-        <div className={style.sessionNotes}>
-          <div className={style.notesSection}>
-            <h4 className={style.notesTitle}>Forecast matched waves?</h4>
-            <p className={style.notesText}>
+            {/* Swells Integrated */}
+            {forecast?.swells && forecast.swells.length > 0 && (
+              <div className={style.forecastGrid}>
+                {forecast.swells.slice(0, 2).map((swell, index) => (
+                  <div key={index} className={style.swellItem}>
+                    <span className={style.swellName}>{swell.name}</span>
+                    <span className={style.swellDetails}>
+                      {parseFloat(swell.height?.split(":")[1] || "0").toFixed(
+                        1
+                      )}
+                      m • {swell.period?.split(":")[1]?.trim()} •{" "}
+                      {parseFloat(
+                        swell.direction?.split(":")[1] || "0"
+                      ).toFixed(0)}
+                      °
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+            <h4 className={style.forecastMatchTitle}>
+              Did Waves match Forecast?
+            </h4>
+            <p className={style.notesForecast}>
               {session.sessionMatchForecast || "No notes about wave match"}
             </p>
           </div>
+        )}
 
+        {/* Session Notes */}
+        <div className={style.sessionNotes}>
           <div className={style.notesSection}>
             <h4 className={style.notesTitle}>Session Notes</h4>
             <p className={style.notesText}>
@@ -149,6 +152,8 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
             </p>
           </div>
         </div>
+
+        {/* Board Info */}
         {board && (
           <div className={style.boardDisplay}>
             <span className={style.boardIcon}>🏄</span>
