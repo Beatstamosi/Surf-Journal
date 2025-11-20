@@ -1,15 +1,12 @@
 .sessionContainer {
   background: var(--bg-primary);
-  border-radius: 16px;
+  border-radius: 0;
   border: 1px solid var(--color-lightgray);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: none;
   overflow: hidden;
   transition: all 0.3s ease;
-}
-
-.sessionContainer:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
+  margin-bottom: 0;
+  position: relative;
 }
 
 /* Session Header */
@@ -17,12 +14,9 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 1rem;
-  background: linear-gradient(
-    180deg,
-    var(--bg-secondary) 0%,
-    var(--bg-primary) 100%
-  );
+  padding: 1.25rem 1.25rem 0.75rem;
+  background: transparent;
+  position: relative;
 }
 
 .sessionInfo {
@@ -31,10 +25,10 @@
 }
 
 .spotName {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: var(--text-primary);
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.375rem 0;
   letter-spacing: -0.03em;
   line-height: 1.2;
 }
@@ -42,7 +36,7 @@
 .sessionMeta {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.125rem;
 }
 
 .date {
@@ -51,39 +45,88 @@
   color: var(--text-secondary);
 }
 
-/* Action Buttons */
-.actionButtons {
+/* 3-dot Menu */
+.menuContainer {
+  position: relative;
+}
+
+.menuButton {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.menuButton:hover {
+  background: var(--color-lightgray);
+  color: var(--text-primary);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--color-lightgray);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 0.5rem;
+  min-width: 200px;
+  z-index: 1000;
+  animation: slideDown 0.2s ease-out;
+}
+
+.menuItem {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  font-size: 0.9rem;
   gap: 0.75rem;
-  flex-shrink: 0;
+}
+
+.menuItem:hover {
+  background: var(--bg-secondary);
+}
+
+.menuToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.deleteItem {
+  color: var(--color-error);
+}
+
+.deleteItem:hover {
+  background: rgba(244, 67, 54, 0.1);
 }
 
 /* Toggle Switch */
-.toggleItem {
-  display: flex;
-  align-items: center;
-}
-
-.toggleLabel {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  font-weight: 600;
-  color: var(--text-primary);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
 .toggleContainer {
   position: relative;
   display: inline-block;
-  width: 40px;
-  height: 22px;
+  width: 36px;
+  height: 20px;
   flex-shrink: 0;
 }
 
@@ -103,14 +146,14 @@
   bottom: 0;
   background-color: var(--color-lightgray);
   transition: 0.3s;
-  border-radius: 22px;
+  border-radius: 20px;
 }
 
 .toggleSlider:before {
   position: absolute;
   content: "";
-  height: 16px;
-  width: 16px;
+  height: 14px;
+  width: 14px;
   left: 3px;
   bottom: 3px;
   background-color: white;
@@ -128,46 +171,15 @@
 }
 
 .toggleInput:checked + .toggleSlider:before {
-  transform: translateX(18px);
-}
-
-/* Icon Buttons */
-.iconButtons {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.iconButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border: none;
-  border-radius: 8px;
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 1rem;
-}
-
-.iconButton:hover {
-  background: var(--color-sky);
-  color: white;
-  transform: scale(1.05);
-}
-
-.iconButton:active {
-  transform: scale(0.95);
+  transform: translateX(16px);
 }
 
 /* Session Content */
 .sessionContent {
-  padding: 1rem;
+  padding: 0 1.25rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 /* Session Image */
@@ -185,27 +197,84 @@
   display: block;
 }
 
-/* Forecast Summary - Card Style */
+/* Modern Forecast Accordion - Social Media Style */
+.forecastAccordion {
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.forecastHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 1rem;
+}
+
+.forecastHeader:hover {
+  background: transparent;
+}
+
+.forecastHeaderContent {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex: 1;
+}
+
 .forecastSummary {
-  background: var(--bg-secondary);
-  border-radius: 12px;
-  padding: 1.25rem;
-  border: 1px solid var(--color-lightgray);
+  font-size: 0.95rem;
+  font-weight: 200;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.accordionIcon {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.accordionIconOpen {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+.forecastContent {
+  padding: 1rem 0 0;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .forecastGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.875rem;
-  margin-bottom: 1.25rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--color-lightgray);
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .forecastGrid:last-child {
   margin-bottom: 0;
-  padding-bottom: 0;
-  border-bottom: none;
 }
 
 .forecastItem {
@@ -215,95 +284,88 @@
 }
 
 .forecastLabel {
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 600;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
 .forecastValue {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 0.95rem;
+  font-weight: 600;
   color: var(--text-primary);
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
-/* Swell Info - Inline with Forecast */
+/* Swell Items */
 .swellItem {
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
 }
 
-.swellName,
-.forecastMatchTitle {
+.swellName {
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-}
-
-.forecastMatchTitle {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.2;
 }
 
 .swellDetails {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.forecastMatchTitle {
+  font-size: 0.85rem;
   font-weight: 700;
-  line-height: 1.2;
-}
-
-/* Session Notes - Modern Clean Style */
-.sessionNotes {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.notesSection {
-  background: var(--bg-primary);
-  border-radius: 12px;
-  border: 1px solid var(--color-lightgray);
-  padding: 0;
-  overflow: hidden;
-}
-
-.notesTitle {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  margin: 1.5rem 0 0.75rem 0;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin: 0;
-  padding: 0.875rem 1.25rem;
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--color-lightgray);
-  text-align: left;
 }
 
 .notesForecast {
   font-size: 0.9rem;
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
-  padding: 0.25rem;
-  white-space: pre-line;
-  font-weight: 400;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  border-left: none;
   text-align: left;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-lightgray);
+}
+
+/* Session Notes - Social Media Style */
+.sessionNotes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-top: 1px solid var(--color-lightgray);
+  padding-top: 1rem;
+}
+
+.notesSection {
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  padding: 0;
+  overflow: hidden;
 }
 
 .notesText {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
   line-height: 1.6;
   margin: 0;
-  padding: 1.25rem;
+  padding: 0;
   white-space: pre-line;
   font-weight: 400;
   text-align: left;
@@ -315,24 +377,24 @@
   font-style: italic;
 }
 
-/* Board Display - Subtle Info Style */
+/* Board Display - Social Media Style */
 .boardDisplay {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  background: var(--bg-secondary);
-  border-radius: 12px;
-  border: 1px solid var(--color-lightgray);
+  background: transparent;
+  border-radius: 0;
 }
 
-.boardIcon {
-  font-size: 1.25rem;
+.iconFilter {
+  width: 24px;
+  filter: invert(52%) sepia(72%) saturate(771%) hue-rotate(1deg)
+    brightness(105%) contrast(102%);
 }
 
 .boardDetails {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 300;
   color: var(--text-primary);
   letter-spacing: -0.01em;
 }
@@ -340,7 +402,10 @@
 /* Desktop Width Control */
 @media (min-width: 769px) {
   .sessionContainer {
-    max-width: 800px;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 0;
+    border-bottom: 1px solid var(--color-lightgray);
   }
 }
 
@@ -349,11 +414,13 @@
   .sessionHeader {
     flex-direction: column;
     gap: 1rem;
+    padding: 1rem 1rem 0.5rem;
   }
 
-  .actionButtons {
-    width: 100%;
-    justify-content: space-between;
+  .menuContainer {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
   }
 
   .forecastGrid {
@@ -362,19 +429,27 @@
   }
 
   .spotName {
-    font-size: 1.35rem;
+    font-size: 1.3rem;
+  }
+
+  .sessionContent {
+    padding: 0 1rem 1rem;
+    gap: 1rem;
   }
 }
 
 @media (max-width: 480px) {
   .sessionContainer {
-    border-radius: 12px;
-    margin-bottom: 1rem;
+    border-radius: 0;
+    margin-bottom: 0;
   }
 
-  .sessionHeader,
+  .sessionHeader {
+    padding: 1rem 1rem 0.5rem;
+  }
+
   .sessionContent {
-    padding: 1rem;
+    padding: 0 1rem 1rem;
   }
 
   .spotName {
@@ -386,47 +461,32 @@
     gap: 1rem;
   }
 
-  .forecastSummary {
-    padding: 1rem;
-  }
-
-  .actionButtons {
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .iconButtons {
-    flex: 1;
-    justify-content: flex-end;
-  }
-
-  .iconButton {
-    width: 34px;
-    height: 34px;
-    font-size: 0.9rem;
+  .dropdownMenu {
+    min-width: 180px;
+    right: -0.5rem;
   }
 
   .boardDisplay {
-    padding: 0.875rem 1rem;
-  }
-
-  .notesTitle {
-    font-size: 0.65rem;
-    padding: 0.75rem 1rem;
-    text-align: left;
+    padding: 0.75rem 0;
   }
 
   .notesText {
-    font-size: 0.85rem;
-    padding: 1rem;
-    text-align: left;
+    font-size: 0.9rem;
   }
 
-  .swellItem {
-    gap: 0.375rem;
+  .forecastHeader {
+    padding: 0.75rem 0;
   }
 
-  .swellDetails {
+  .forecastContent {
+    padding: 0.75rem 0 0;
+  }
+
+  .forecastHeaderContent {
+    gap: 0.75rem;
+  }
+
+  .forecastSummary {
     font-size: 0.9rem;
   }
 }

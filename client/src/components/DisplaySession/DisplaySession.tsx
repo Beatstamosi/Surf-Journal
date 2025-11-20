@@ -2,7 +2,11 @@ import { useState } from "react";
 import type { Session } from "../types/models";
 import style from "./DisplaySession.module.css";
 import { FaEdit } from "react-icons/fa";
+import { CiMenuKebab } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
+import { FaChevronDown } from "react-icons/fa";
+import surfBoardSessionSVG from "../../assets/surfboard_session.svg";
+import radarSVG from "../../assets/radar.svg";
 
 interface DisplaySessionProps {
   session: Session;
@@ -10,6 +14,8 @@ interface DisplaySessionProps {
 
 export default function DisplaySession({ session }: DisplaySessionProps) {
   const [isShared, setIsShared] = useState(session.shared);
+  const [isForecastOpen, setIsForecastOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const forecast = session.forecast;
   const board = session.board;
 
@@ -30,9 +36,24 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
     return size?.replace("Surf: ", "") || "N/A";
   };
 
+  // Generate forecast summary for collapsed state
+  const getForecastSummary = () => {
+    if (!forecast) return "No forecast data";
+
+    const waveHeight = getWaveHeight(forecast.size);
+    const wind = `${forecast.windSpeed} ${forecast.windDirection}`;
+
+    return `${waveHeight}m • ${wind}`;
+  };
+
+  // Close menu when clicking outside
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <div className={style.sessionContainer}>
-      {/* Session Header */}
+      {/* Session Header with 3-dot menu */}
       <div className={style.sessionHeader}>
         <div className={style.sessionInfo}>
           <h2 className={style.spotName}>{forecast?.spotName}</h2>
@@ -44,34 +65,42 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className={style.actionButtons}>
-          <div className={style.toggleItem}>
-            <label
-              htmlFor={`share-${session.id}`}
-              className={style.toggleLabel}
-            >
-              <span>Share</span>
-              <div className={style.toggleContainer}>
-                <input
-                  type="checkbox"
-                  id={`share-${session.id}`}
-                  checked={isShared}
-                  onChange={(e) => setIsShared(e.target.checked)}
-                  className={style.toggleInput}
-                />
-                <span className={style.toggleSlider}></span>
+        {/* 3-dot dropdown menu */}
+        <div className={style.menuContainer}>
+          <button
+            className={style.menuButton}
+            onClick={handleMenuToggle}
+            title="More options"
+          >
+            <CiMenuKebab size={"2em"}/>
+          </button>
+
+          {isMenuOpen && (
+            <div className={style.dropdownMenu}>
+              <div className={style.menuItem}>
+                <label className={style.menuToggle}>
+                  <span>Share</span>
+                  <div className={style.toggleContainer}>
+                    <input
+                      type="checkbox"
+                      checked={isShared}
+                      onChange={(e) => setIsShared(e.target.checked)}
+                      className={style.toggleInput}
+                    />
+                    <span className={style.toggleSlider}></span>
+                  </div>
+                </label>
               </div>
-            </label>
-          </div>
-          <div className={style.iconButtons}>
-            <button className={style.iconButton} title="Edit session">
-              <FaEdit />
-            </button>
-            <button className={style.iconButton} title="Delete session">
-              <MdDelete />
-            </button>
-          </div>
+              <button className={style.menuItem}>
+                <FaEdit />
+                <span>Edit session</span>
+              </button>
+              <button className={`${style.menuItem} ${style.deleteItem}`}>
+                <MdDelete />
+                <span>Delete session</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -84,84 +113,108 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
           </div>
         )}
 
-        {/* Forecast Summary with Swells Integrated */}
+        {/* Forecast Accordion */}
         {forecast && (
-          <div className={style.forecastSummary}>
-            <div className={style.forecastGrid}>
-              <div className={style.forecastItem}>
-                <span className={style.forecastLabel}>Wave Height</span>
-                <span className={style.forecastValue}>
-                  {getWaveHeight(forecast.size)}
+          <div className={style.forecastAccordion}>
+            <button
+              className={style.forecastHeader}
+              onClick={() => setIsForecastOpen(!isForecastOpen)}
+            >
+              <div className={style.forecastHeaderContent}>
+                <img src={radarSVG} alt="" className={style.iconFilter} />
+                <span className={style.forecastSummary}>
+                  {getForecastSummary()}
                 </span>
               </div>
-              <div className={style.forecastItem}>
-                <span className={style.forecastLabel}>Conditions</span>
-                <span className={style.forecastValue}>
-                  {forecast.description}
-                </span>
-              </div>
-              <div className={style.forecastItem}>
-                <span className={style.forecastLabel}>Wind</span>
-                <span className={style.forecastValue}>
-                  {forecast.windSpeed} {forecast.windDirection}
-                </span>
-              </div>
-              <div className={style.forecastItem}>
-                <span className={style.forecastLabel}>Tide</span>
-                <span className={style.forecastValue}>
-                  {forecast.tideHeight} {forecast.tideType}
-                </span>
-              </div>
-            </div>
+              <FaChevronDown
+                className={`${style.accordionIcon} ${
+                  isForecastOpen ? style.accordionIconOpen : ""
+                }`}
+              />
+            </button>
 
-            {/* Swells Integrated */}
-            {forecast?.swells && forecast.swells.length > 0 && (
-              <div className={style.forecastGrid}>
-                {forecast.swells.slice(0, 2).map((swell, index) => (
-                  <div key={index} className={style.swellItem}>
-                    <span className={style.swellName}>{swell.name}</span>
-                    <span className={style.swellDetails}>
-                      {parseFloat(swell.height?.split(":")[1] || "0").toFixed(
-                        1
-                      )}
-                      m • {swell.period?.split(":")[1]?.trim()} •{" "}
-                      {parseFloat(
-                        swell.direction?.split(":")[1] || "0"
-                      ).toFixed(0)}
-                      °
+            {isForecastOpen && (
+              <div className={style.forecastContent}>
+                <div className={style.forecastGrid}>
+                  <div className={style.forecastItem}>
+                    <span className={style.forecastLabel}>Wave Height</span>
+                    <span className={style.forecastValue}>
+                      {getWaveHeight(forecast.size)}m
                     </span>
                   </div>
-                ))}
+                  <div className={style.forecastItem}>
+                    <span className={style.forecastLabel}>Conditions</span>
+                    <span className={style.forecastValue}>
+                      {forecast.description}
+                    </span>
+                  </div>
+                  <div className={style.forecastItem}>
+                    <span className={style.forecastLabel}>Wind</span>
+                    <span className={style.forecastValue}>
+                      {forecast.windSpeed} {forecast.windDirection}
+                    </span>
+                  </div>
+                  <div className={style.forecastItem}>
+                    <span className={style.forecastLabel}>Tide</span>
+                    <span className={style.forecastValue}>
+                      {forecast.tideHeight} {forecast.tideType}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Swells Integrated */}
+                {forecast?.swells && forecast.swells.length > 0 && (
+                  <div className={style.forecastGrid}>
+                    {forecast.swells.slice(0, 2).map((swell, index) => (
+                      <div key={index} className={style.swellItem}>
+                        <span className={style.swellName}>{swell.name}</span>
+                        <span className={style.swellDetails}>
+                          {parseFloat(
+                            swell.height?.split(":")[1] || "0"
+                          ).toFixed(1)}
+                          m • {swell.period?.split(":")[1]?.trim()} •{" "}
+                          {parseFloat(
+                            swell.direction?.split(":")[1] || "0"
+                          ).toFixed(0)}
+                          °
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <h4 className={style.forecastMatchTitle}>
+                  Did Waves match Forecast?
+                </h4>
+                <p className={style.notesForecast}>
+                  {session.sessionMatchForecast || "No notes about wave match"}
+                </p>
               </div>
             )}
-            <h4 className={style.forecastMatchTitle}>
-              Did Waves match Forecast?
-            </h4>
-            <p className={style.notesForecast}>
-              {session.sessionMatchForecast || "No notes about wave match"}
-            </p>
+          </div>
+        )}
+
+        {/* Board Info */}
+        {board && (
+          <div className={style.boardDisplay}>
+            <img
+              src={surfBoardSessionSVG}
+              alt=""
+              className={style.iconFilter}
+            />
+            <span className={style.boardDetails}>
+              {board.brand} {board.name} • {board.size} • {board.volume}L
+            </span>
           </div>
         )}
 
         {/* Session Notes */}
         <div className={style.sessionNotes}>
           <div className={style.notesSection}>
-            <h4 className={style.notesTitle}>Session Notes</h4>
             <p className={style.notesText}>
               {session.description || "No session notes"}
             </p>
           </div>
         </div>
-
-        {/* Board Info */}
-        {board && (
-          <div className={style.boardDisplay}>
-            <span className={style.boardIcon}>🏄</span>
-            <span className={style.boardDetails}>
-              {board.brand} {board.name} • {board.size} • {board.volume}L
-            </span>
-          </div>
-        )}
       </div>
     </div>
   );
