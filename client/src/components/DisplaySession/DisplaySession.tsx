@@ -12,6 +12,16 @@ interface DisplaySessionProps {
   session: Session;
 }
 
+// TODO:
+// fix 3 dot menu positioning on mobile
+// hover area around 3 dot menu smaller
+// click anywhere to close 3 dot menu
+// full border, no width on mobile
+// board name text-wrap
+// if user.id === session.user.id add 3 dot menu
+// pageWrapper mySessions desktop delete grid (?) view
+// on Sidebar menu click load ScrollToTop
+
 export default function DisplaySession({ session }: DisplaySessionProps) {
   const [isShared, setIsShared] = useState(session.shared);
   const [isForecastOpen, setIsForecastOpen] = useState(false);
@@ -53,54 +63,51 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
 
   return (
     <div className={style.sessionContainer}>
+      {/* 3-dot dropdown menu */}
+      <div className={style.menuContainer}>
+        <button
+          className={style.menuButton}
+          onClick={handleMenuToggle}
+          title="More options"
+        >
+          <CiMenuKebab size={"2em"} />
+        </button>
+
+        {isMenuOpen && (
+          <div className={style.dropdownMenu}>
+            <div className={style.menuItem}>
+              <label className={style.menuToggle}>
+                <span>Share</span>
+                <div className={style.toggleContainer}>
+                  <input
+                    type="checkbox"
+                    checked={isShared}
+                    onChange={(e) => setIsShared(e.target.checked)}
+                    className={style.toggleInput}
+                  />
+                  <span className={style.toggleSlider}></span>
+                </div>
+              </label>
+            </div>
+            <button className={style.menuItem}>
+              <FaEdit />
+              <span>Edit session</span>
+            </button>
+            <button className={`${style.menuItem} ${style.deleteItem}`}>
+              <MdDelete />
+              <span>Delete session</span>
+            </button>
+          </div>
+        )}
+      </div>
+
       {/* Session Header with 3-dot menu */}
       <div className={style.sessionHeader}>
         <div className={style.sessionInfo}>
           <h2 className={style.spotName}>{forecast?.spotName}</h2>
           <div className={style.sessionMeta}>
-            <span className={style.date}>{forecast?.region}</span>
+            <span className={style.location}>{forecast?.region}</span>
           </div>
-          <div className={style.sessionMeta}>
-            <span className={style.date}>{formatDate(session.startTime)}</span>
-          </div>
-        </div>
-
-        {/* 3-dot dropdown menu */}
-        <div className={style.menuContainer}>
-          <button
-            className={style.menuButton}
-            onClick={handleMenuToggle}
-            title="More options"
-          >
-            <CiMenuKebab size={"2em"}/>
-          </button>
-
-          {isMenuOpen && (
-            <div className={style.dropdownMenu}>
-              <div className={style.menuItem}>
-                <label className={style.menuToggle}>
-                  <span>Share</span>
-                  <div className={style.toggleContainer}>
-                    <input
-                      type="checkbox"
-                      checked={isShared}
-                      onChange={(e) => setIsShared(e.target.checked)}
-                      className={style.toggleInput}
-                    />
-                    <span className={style.toggleSlider}></span>
-                  </div>
-                </label>
-              </div>
-              <button className={style.menuItem}>
-                <FaEdit />
-                <span>Edit session</span>
-              </button>
-              <button className={`${style.menuItem} ${style.deleteItem}`}>
-                <MdDelete />
-                <span>Delete session</span>
-              </button>
-            </div>
-          )}
         </div>
       </div>
 
@@ -215,6 +222,10 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
             </p>
           </div>
         </div>
+      </div>
+
+      <div className={style.sessionMeta}>
+        <span className={style.date}>{formatDate(session.startTime)}</span>
       </div>
     </div>
   );
