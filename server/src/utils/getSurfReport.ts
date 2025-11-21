@@ -217,7 +217,7 @@ export async function getSurfReport(
     const surf = waveMatch.surf;
     const swells =
       waveMatch.swells?.slice(0, 3).map((swell: any, i: number) => ({
-        swell: `Swell ${i + 1}`,
+        name: `Swell ${i + 1}`,
         height: `Height: ${swell.height ?? "N/A"}`,
         period: `Period: ${swell.period ?? "N/A"} seconds`,
         power: `Power: ${Math.round(swell.power ?? 0)}kJ`,
