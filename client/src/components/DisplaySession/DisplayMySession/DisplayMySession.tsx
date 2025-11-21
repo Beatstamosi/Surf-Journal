@@ -1,31 +1,31 @@
-import { useState } from "react";
-import type { Session } from "../types/models";
-import style from "./DisplaySession.module.css";
+import { useState, useEffect, useRef } from "react";
+import type { Session } from "../../types/models";
+import style from "./DisplayMySession.module.css";
 import { FaEdit } from "react-icons/fa";
 import { CiMenuKebab } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { FaChevronDown } from "react-icons/fa";
-import surfBoardSessionSVG from "../../assets/surfboard_session.svg";
-import radarSVG from "../../assets/radar.svg";
+import surfBoardSessionSVG from "../../../assets/surfboard_session.svg";
+import radarSVG from "../../../assets/radar.svg";
 
 interface DisplaySessionProps {
   session: Session;
 }
 
 // TODO:
-// fix 3 dot menu positioning on mobile
-// hover area around 3 dot menu smaller
-// click anywhere to close 3 dot menu
-// full border, no width on mobile
-// board name text-wrap
-// if user.id === session.user.id add 3 dot menu
-// pageWrapper mySessions desktop delete grid (?) view
+
 // on Sidebar menu click load ScrollToTop
+// after adding board to quiver ScrollToTop
+
+// edit functionality
+// delete functionality
+// share functionality
 
 export default function DisplaySession({ session }: DisplaySessionProps) {
   const [isShared, setIsShared] = useState(session.shared);
   const [isForecastOpen, setIsForecastOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   const forecast = session.forecast;
   const board = session.board;
 
@@ -57,6 +57,22 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
   };
 
   // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -64,13 +80,13 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
   return (
     <div className={style.sessionContainer}>
       {/* 3-dot dropdown menu */}
-      <div className={style.menuContainer}>
+      <div className={style.menuContainer} ref={menuRef}>
         <button
           className={style.menuButton}
           onClick={handleMenuToggle}
           title="More options"
         >
-          <CiMenuKebab size={"2em"} />
+          <CiMenuKebab size={"1.5em"} />
         </button>
 
         {isMenuOpen && (

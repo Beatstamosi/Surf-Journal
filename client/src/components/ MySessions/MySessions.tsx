@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import style from "./MySessions.module.css";
 import { apiClient } from "../../utils/apiClient";
 import DisplayPost from "../DisplayPost/DisplayPost";
-import DisplaySession from "../DisplaySession/DisplaySession";
+import DisplaySession from "../DisplaySession/DisplayMySession/DisplayMySession";
 
 export default function MySessions() {
   const [sessions, setSessions] = useState<Session[] | null>();
