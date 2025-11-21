@@ -37,6 +37,11 @@ export default function MyQuiver() {
       });
       form.reset();
       await fetchBoards();
+      window.scrollTo({
+        top: 0,
+        behavior: "instant",
+      });
+      setShowAddBoard(false);
     } catch (err) {
       console.error("Error adding board", err);
     }
