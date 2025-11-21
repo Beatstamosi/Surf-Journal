@@ -74,6 +74,8 @@ export interface ForecastFromAPI {
   windDirection?: string;
   windSpeed?: string;
   windGust?: string;
+  ratingValue?: number;
+  ratingDescription?: string;
   swells?: Swell[];
   sessions?: Session[];
 }

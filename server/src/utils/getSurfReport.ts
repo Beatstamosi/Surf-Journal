@@ -269,14 +269,6 @@ export async function getSurfReport(
         : undefined,
     };
 
-    console.log(`Rating for ${surfInfo.spotName}:`, {
-      finalRating: rating.value,
-      source: rating.source,
-      waveHeight: `${surf.min}-${surf.max}ft`,
-      period: waveMatch.swells?.[0]?.period,
-      wind: windMatch?.directionType,
-    });
-
     return report;
   } catch (error) {
     console.error("Error fetching surf report:", error);

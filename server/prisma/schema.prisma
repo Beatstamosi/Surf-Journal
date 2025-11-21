@@ -63,19 +63,21 @@ model Quiver {
 }
 
 model Forecast {
-  id             Int      @id @default(autoincrement())
-  spotName       String
-  region         String?
-  surflineSpotId String?
-  description    String?
-  size           String?
-  waveEnergy     String?
-  date           DateTime
-  tideHeight     String?
-  tideType       String?
-  windDirection  String?
-  windSpeed      String?
-  windGust       String?
+  id                Int      @id @default(autoincrement())
+  spotName          String
+  region            String?
+  surflineSpotId    String?
+  description       String?
+  size              String?
+  waveEnergy        String?
+  date              DateTime
+  tideHeight        String?
+  tideType          String?
+  windDirection     String?
+  windSpeed         String?
+  windGust          String?
+  ratingValue       Int?
+  ratingDescription String?
 
   // Multiple swells — separate table for normalization
   swells Swell[]

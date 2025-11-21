@@ -60,6 +60,8 @@ async function addForecastToPrisma(
         windDirection: forecastData.wind?.direction,
         windSpeed: forecastData.wind?.speed,
         windGust: forecastData.wind?.gust,
+        ratingValue: forecastData.rating.value,
+        ratingDescription: forecastData.rating.description,
         swells: {
           create: forecastData.swells.map((swell) => ({
             name: swell.swell,

@@ -7,14 +7,13 @@ import { MdDelete } from "react-icons/md";
 import { FaChevronDown } from "react-icons/fa";
 import surfBoardSessionSVG from "../../../assets/surfboard_session.svg";
 import radarSVG from "../../../assets/radar.svg";
+import EditSession from "../../EditSession/EditSession";
 
 interface DisplaySessionProps {
   session: Session;
 }
 
 // TODO:
-// after adding board to quiver ScrollToTop
-
 // edit functionality
 // delete functionality
 // share functionality
@@ -23,6 +22,7 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
   const [isShared, setIsShared] = useState(session.shared);
   const [isForecastOpen, setIsForecastOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [editSession, setEditSession] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const forecast = session.forecast;
   const board = session.board;
@@ -51,7 +51,7 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
     const waveHeight = getWaveHeight(forecast.size);
     const wind = `${forecast.windSpeed} ${forecast.windDirection}`;
 
-    return `${waveHeight}m • ${wind}`;
+    return `${waveHeight}m • ${wind} • ${forecast.ratingDescription}`;
   };
 
   // Close menu when clicking outside
@@ -75,8 +75,17 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleEditSession = (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    setEditSession(true);
+    setIsMenuOpen(false);
+  };
+
   return (
     <div className={style.sessionContainer}>
+      {editSession && <EditSession session={session} />}
+
       {/* 3-dot dropdown menu */}
       <div className={style.menuContainer} ref={menuRef}>
         <button
@@ -103,7 +112,7 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
                 </div>
               </label>
             </div>
-            <button className={style.menuItem}>
+            <button className={style.menuItem} onClick={handleEditSession}>
               <FaEdit />
               <span>Edit session</span>
             </button>
