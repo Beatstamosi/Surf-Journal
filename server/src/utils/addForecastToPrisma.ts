@@ -2,7 +2,7 @@ import prisma from "../lib/prisma.js";
 import type { Prisma } from "@prisma/client";
 
 interface SwellData {
-  swell: string;
+  name: string;
   height: string;
   period: string;
   power: string;
@@ -64,7 +64,7 @@ async function addForecastToPrisma(
         ratingDescription: forecastData.rating.description,
         swells: {
           create: forecastData.swells.map((swell) => ({
-            name: swell.swell,
+            name: swell.name,
             height: swell.height,
             period: swell.period,
             power: swell.power,
