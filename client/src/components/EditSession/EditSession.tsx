@@ -8,23 +8,27 @@ import { useAuth } from "../Authentication/useAuth";
 import { transformForecastToReport } from "../../utils/transformForecastToReport";
 
 // TODO
-// Update API
-  // why is order of sessions changing after editing???
+// Update API to delete session
+// Update API to toggle share session on / off
+// --> toggle on create post
+// --> toggle off delete post
 // Update Session setEdit false
-  // --> toggle on create post
-  // --> toggle off delete post
 // scrolling issue when clicking cancel or saving or edit
+
+// SESSIONS DO NOT UPDATE VIA SESSIONUPDATE
 
 export default function EditSession({
   session,
   setEditSession,
+  onSessionUpdate,
 }: {
   session: Session;
   setEditSession: React.Dispatch<React.SetStateAction<boolean>>;
+  onSessionUpdate: (updatedSession: Session) => void;
 }) {
   const [boards, setBoards] = useState<Board[] | null>();
   const [shareInFeed, setShareInFeed] = useState(session.shared);
-  const [sessionUpdatedConfirmation, setsessionUpdatedConfirmation] =
+  const [sessionUpdatedConfirmation, setSessionUpdatedConfirmation] =
     useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { user } = useAuth();
@@ -62,7 +66,7 @@ export default function EditSession({
         );
       }
 
-      await apiClient("/sessions", {
+      const response = await apiClient("/sessions", {
         method: "PUT",
         body: JSON.stringify({
           sessionId: session.id,
@@ -72,6 +76,7 @@ export default function EditSession({
         }),
       });
 
+      onSessionUpdate(response.updatedSession);
       showConfirmation();
     } catch (err) {
       console.error("Error updating session: ", err);
@@ -79,10 +84,10 @@ export default function EditSession({
   };
 
   const showConfirmation = () => {
-    setsessionUpdatedConfirmation(true);
+    setSessionUpdatedConfirmation(true);
 
     setTimeout(() => {
-      setsessionUpdatedConfirmation(false);
+      setSessionUpdatedConfirmation(false);
       setEditSession(false);
     }, 1500);
   };

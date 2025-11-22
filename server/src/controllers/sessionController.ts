@@ -98,7 +98,7 @@ const updateSession = async (req: Request, res: Response) => {
     if (!user) throw Error("Missing user id.");
 
     // Use transaction to ensure data consistency
-    await prisma.$transaction(async (tx) => {
+    const updatedSession = await prisma.$transaction(async (tx) => {
       // 1. Update session
       const session = await tx.session.update({
         where: {
@@ -111,9 +111,17 @@ const updateSession = async (req: Request, res: Response) => {
           shared: shareInFeed,
           boardId,
         },
+        include: {
+          forecast: {
+            include: {
+              swells: true,
+            },
+          },
+          board: true,
+        },
       });
 
-      // 3. Create post if shared
+      // 2. Create post if shared
       if (shareInFeed) {
         await tx.post.create({
           data: {
@@ -126,7 +134,7 @@ const updateSession = async (req: Request, res: Response) => {
       return session;
     });
 
-    res.sendStatus(201);
+    res.status(201).json({ updatedSession });
   } catch (err) {
     handleError(err, res);
   }

@@ -12,14 +12,19 @@ import getRatingClass from "../../../utils/getRatingClass";
 
 interface DisplaySessionProps {
   session: Session;
+  onSessionUpdate: (updatedSession: Session) => void;
 }
 
 // TODO:
 // edit functionality
 // delete functionality
 // share functionality
+// display forecast via DisplayForecast - title: false
 
-export default function DisplaySession({ session }: DisplaySessionProps) {
+export default function DisplayMySession({
+  session,
+  onSessionUpdate,
+}: DisplaySessionProps) {
   const [isShared, setIsShared] = useState(session.shared);
   const [isForecastOpen, setIsForecastOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -87,7 +92,11 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
   return (
     <div className={style.sessionContainer}>
       {editSession ? (
-        <EditSession session={session} setEditSession={setEditSession} />
+        <EditSession
+          session={session}
+          setEditSession={setEditSession}
+          onSessionUpdate={onSessionUpdate}
+        />
       ) : (
         <>
           {/* 3-dot dropdown menu */}
@@ -243,7 +252,7 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
                   className={style.iconFilter}
                 />
                 <span className={style.boardDetails}>
-                  {board.brand} {board.name} • {board.size} • {board.volume}L
+                  {board.brand} • {board.name} • {board.size} • {board.volume}L
                 </span>
               </div>
             )}

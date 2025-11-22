@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import style from "./MySessions.module.css";
 import { apiClient } from "../../utils/apiClient";
 import DisplayPost from "../DisplayPost/DisplayPost";
-import DisplaySession from "../DisplaySession/DisplayMySession/DisplayMySession";
+import DisplayMySession from "../DisplaySession/DisplayMySession/DisplayMySession";
 
 export default function MySessions() {
   const [sessions, setSessions] = useState<Session[] | null>();
@@ -16,6 +16,14 @@ export default function MySessions() {
 
   const isPost = (item: Session | Post): item is Post => {
     return "creatorId" in item;
+  };
+
+  const updateSession = (updatedSession: Session) => {
+    setSessions((prevSessions) =>
+      prevSessions?.map((session) =>
+        session.id === updatedSession.id ? updatedSession : session
+      )
+    );
   };
 
   // useEffect fetch Sessions
@@ -107,7 +115,13 @@ export default function MySessions() {
             if (isPost(item)) {
               return <DisplayPost key={item.id} post={item} />;
             } else {
-              return <DisplaySession key={item.id} session={item} />;
+              return (
+                <DisplayMySession
+                  key={item.id}
+                  session={item}
+                  onSessionUpdate={updateSession}
+                />
+              );
             }
           })
         ) : (
