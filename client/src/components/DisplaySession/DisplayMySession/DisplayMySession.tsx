@@ -9,6 +9,8 @@ import surfBoardSessionSVG from "../../../assets/surfboard_session.svg";
 import radarSVG from "../../../assets/radar.svg";
 import EditSession from "../../EditSession/EditSession";
 import getRatingClass from "../../../utils/getRatingClass";
+import ForecastDisplay from "../../ForecastDisplay/ForecastDisplay";
+import { transformForecastToReport } from "../../../utils/transformForecastToReport";
 
 interface DisplaySessionProps {
   session: Session;
@@ -16,7 +18,6 @@ interface DisplaySessionProps {
 }
 
 // TODO:
-// edit functionality
 // delete functionality
 // share functionality
 // display forecast via DisplayForecast - title: false
@@ -181,55 +182,10 @@ export default function DisplayMySession({
 
                 {isForecastOpen && (
                   <div className={style.forecastContent}>
-                    <div className={style.forecastGrid}>
-                      <div className={style.forecastItem}>
-                        <span className={style.forecastLabel}>Wave Height</span>
-                        <span className={style.forecastValue}>
-                          {getWaveHeight(forecast.size)}m
-                        </span>
-                      </div>
-                      <div className={style.forecastItem}>
-                        <span className={style.forecastLabel}>Conditions</span>
-                        <span className={style.forecastValue}>
-                          {forecast.description}
-                        </span>
-                      </div>
-                      <div className={style.forecastItem}>
-                        <span className={style.forecastLabel}>Wind</span>
-                        <span className={style.forecastValue}>
-                          {forecast.windSpeed} {forecast.windDirection}
-                        </span>
-                      </div>
-                      <div className={style.forecastItem}>
-                        <span className={style.forecastLabel}>Tide</span>
-                        <span className={style.forecastValue}>
-                          {forecast.tideHeight} {forecast.tideType}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Swells Integrated */}
-                    {forecast?.swells && forecast.swells.length > 0 && (
-                      <div className={style.forecastGrid}>
-                        {forecast.swells.slice(0, 2).map((swell, index) => (
-                          <div key={index} className={style.swellItem}>
-                            <span className={style.swellName}>
-                              {swell.name}
-                            </span>
-                            <span className={style.swellDetails}>
-                              {parseFloat(
-                                swell.height?.split(":")[1] || "0"
-                              ).toFixed(1)}
-                              m • {swell.period?.split(":")[1]?.trim()} •{" "}
-                              {parseFloat(
-                                swell.direction?.split(":")[1] || "0"
-                              ).toFixed(0)}
-                              °
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <ForecastDisplay
+                      forecast={transformForecastToReport(session.forecast!)}
+                      addHeader={false}
+                    />
 
                     <h4 className={style.forecastMatchTitle}>
                       Did Waves match Forecast?

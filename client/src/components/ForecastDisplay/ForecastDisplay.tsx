@@ -4,9 +4,13 @@ import style from "./ForecastDisplay.module.css";
 
 interface ForecastDisplayProps {
   forecast: ForecastReport;
+  addHeader: boolean;
 }
 
-export default function ForecastDisplay({ forecast }: ForecastDisplayProps) {
+export default function ForecastDisplay({
+  forecast,
+  addHeader,
+}: ForecastDisplayProps) {
   const ratingClass = style[getRatingClass(forecast.rating?.value || 1)];
 
   // Extract wave height from size string
@@ -15,17 +19,19 @@ export default function ForecastDisplay({ forecast }: ForecastDisplayProps) {
   };
 
   return (
-    <div className={style.forecastContainer}>
+    <div className={addHeader ? style.forecastContainer : ""}>
       {/* Main Header with Rating */}
-      <div className={style.header}>
-        <div className={style.spotInfo}>
-          <h1 className={style.spotName}>{forecast.spotName}</h1>
-          <div className={style.region}>{forecast.region}</div>
+      {addHeader && (
+        <div className={style.header}>
+          <div className={style.spotInfo}>
+            <h1 className={style.spotName}>{forecast.spotName}</h1>
+            <div className={style.region}>{forecast.region}</div>
+          </div>
+          <div className={`${style.ratingBadge} ${ratingClass}`}>
+            {forecast.rating?.description || "UNKNOWN"}
+          </div>
         </div>
-        <div className={`${style.ratingBadge} ${ratingClass}`}>
-          {forecast.rating?.description || "UNKNOWN"}
-        </div>
-      </div>
+      )}
 
       <div className={style.forecastGrid}>
         <div className={style.forecastItem}>

@@ -200,7 +200,7 @@ export default function AddSession() {
         </div>
 
         <form onSubmit={handlerSaveSession} className={style.formAddSession}>
-          <ForecastDisplay forecast={forecast} />
+          <ForecastDisplay forecast={forecast} addHeader={true} />
 
           <div className={style.sessionDetails}>
             <div className={style.inputGroup}>

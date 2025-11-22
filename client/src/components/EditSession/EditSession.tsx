@@ -117,6 +117,7 @@ export default function EditSession({
       <form onSubmit={handlerSaveSession} className={style.formAddSession}>
         <ForecastDisplay
           forecast={transformForecastToReport(session.forecast!)}
+          addHeader={false}
         />
 
         <div className={style.sessionDetails}>
