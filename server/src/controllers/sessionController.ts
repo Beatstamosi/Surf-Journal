@@ -140,4 +140,21 @@ const updateSession = async (req: Request, res: Response) => {
   }
 };
 
-export { addSession, getAllUserSessions, updateSession };
+const deleteSession = async (req: Request, res: Response) => {
+  const { sessionId } = req.body;
+
+  try {
+    if (!sessionId) throw new Error("Missing Session Id");
+
+    await prisma.session.delete({
+      where: {
+        id: sessionId,
+      },
+    });
+    res.status(204).json({ message: "Session deleted successfully" });
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+export { addSession, getAllUserSessions, updateSession, deleteSession };

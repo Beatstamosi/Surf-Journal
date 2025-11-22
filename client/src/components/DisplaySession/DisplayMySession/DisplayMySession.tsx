@@ -11,20 +11,23 @@ import EditSession from "../../EditSession/EditSession";
 import getRatingClass from "../../../utils/getRatingClass";
 import ForecastDisplay from "../../ForecastDisplay/ForecastDisplay";
 import { transformForecastToReport } from "../../../utils/transformForecastToReport";
+import { apiClient } from "../../../utils/apiClient";
+import deleteSessionImageFromStorage from "../../../utils/deleteSessionImageFromStorage";
 
 interface DisplaySessionProps {
   session: Session;
   onSessionUpdate: (updatedSession: Session) => void;
+  onSessionDelete: (sessionToDelete: Session) => void;
 }
 
 // TODO:
 // delete functionality
 // share functionality
-// display forecast via DisplayForecast - title: false
 
 export default function DisplayMySession({
   session,
   onSessionUpdate,
+  onSessionDelete,
 }: DisplaySessionProps) {
   const [isShared, setIsShared] = useState(session.shared);
   const [isForecastOpen, setIsForecastOpen] = useState(false);
@@ -90,6 +93,24 @@ export default function DisplayMySession({
     setIsMenuOpen(false);
   };
 
+  const handleDeleteSession = async (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    try {
+      await apiClient("/sessions", {
+        method: "DELETE",
+        body: JSON.stringify({ sessionId: session.id }),
+      });
+
+      if (session.image) {
+        await deleteSessionImageFromStorage(session.image);
+      }
+      onSessionDelete(session);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className={style.sessionContainer}>
       {editSession ? (
@@ -130,7 +151,10 @@ export default function DisplayMySession({
                   <FaEdit />
                   <span>Edit session</span>
                 </button>
-                <button className={`${style.menuItem} ${style.deleteItem}`}>
+                <button
+                  className={`${style.menuItem} ${style.deleteItem}`}
+                  onClick={handleDeleteSession}
+                >
                   <MdDelete />
                   <span>Delete session</span>
                 </button>

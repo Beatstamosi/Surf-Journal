@@ -26,6 +26,12 @@ export default function MySessions() {
     );
   };
 
+  const deleteSession = (sessionToDelete: Session) => {
+    setSessions((prevSessions) =>
+      prevSessions?.filter((session) => session.id !== sessionToDelete.id)
+    );
+  };
+
   // useEffect fetch Sessions
   useEffect(() => {
     const fetchSessions = async () => {
@@ -112,6 +118,8 @@ export default function MySessions() {
       <div className={style.sessionsGrid}>
         {filteredSessions && filteredSessions.length > 0 ? (
           filteredSessions.map((item) => {
+            if (!item) return false;
+
             if (isPost(item)) {
               return <DisplayPost key={item.id} post={item} />;
             } else {
@@ -120,6 +128,7 @@ export default function MySessions() {
                   key={item.id}
                   session={item}
                   onSessionUpdate={updateSession}
+                  onSessionDelete={deleteSession}
                 />
               );
             }

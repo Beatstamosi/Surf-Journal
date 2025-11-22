@@ -2,6 +2,7 @@ import { Router } from "express";
 import validateJWTToken from "../middlewares/validateJWTToken.js";
 import {
   addSession,
+  deleteSession,
   getAllUserSessions,
   updateSession,
 } from "../controllers/sessionController.js";
@@ -12,6 +13,7 @@ sessionRouter.use(validateJWTToken);
 
 sessionRouter.post("/", addSession);
 sessionRouter.put("/", updateSession);
+sessionRouter.delete("/", deleteSession);
 sessionRouter.get("/user/all", getAllUserSessions);
 
 export default sessionRouter;
