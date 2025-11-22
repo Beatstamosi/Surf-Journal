@@ -80,4 +80,53 @@ const getAllUserSessions = async (req: Request, res: Response) => {
   }
 };
 
-export { addSession, getAllUserSessions };
+const updateSession = async (req: Request, res: Response) => {
+  const {
+    sessionId,
+    shareInFeed,
+    sessionMatchForecast,
+    description,
+    sessionImageUrl,
+    boardId,
+  } = req.body;
+  const user = req.user;
+
+  try {
+    if (!user) throw Error("Missing user id.");
+
+    // Use transaction to ensure data consistency
+    await prisma.$transaction(async (tx) => {
+      // 1. Update session
+      const session = await tx.session.update({
+        where: {
+          id: sessionId,
+        },
+        data: {
+          description,
+          sessionMatchForecast,
+          image: sessionImageUrl ? sessionImageUrl : null,
+          shared: shareInFeed,
+          boardId,
+        },
+      });
+
+      // 3. Create post if shared
+      if (shareInFeed) {
+        await tx.post.create({
+          data: {
+            creatorId: user.id,
+            sessionId: session.id,
+          },
+        });
+      }
+
+      return session;
+    });
+
+    res.sendStatus(201);
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+export { addSession, getAllUserSessions, updateSession };

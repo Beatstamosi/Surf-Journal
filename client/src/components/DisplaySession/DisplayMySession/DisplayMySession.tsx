@@ -172,12 +172,6 @@ export default function DisplaySession({ session }: DisplaySessionProps) {
 
                 {isForecastOpen && (
                   <div className={style.forecastContent}>
-                    {forecast.ratingDescription && (
-                      <div className={`${style.ratingBadge} ${ratingClass}`}>
-                        {forecast.ratingDescription || "UNKNOWN"}
-                      </div>
-                    )}
-
                     <div className={style.forecastGrid}>
                       <div className={style.forecastItem}>
                         <span className={style.forecastLabel}>Wave Height</span>

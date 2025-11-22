@@ -9,7 +9,10 @@ import { transformForecastToReport } from "../../utils/transformForecastToReport
 
 // TODO
 // Update API
+  // why is order of sessions changing after editing???
 // Update Session setEdit false
+  // --> toggle on create post
+  // --> toggle off delete post
 // scrolling issue when clicking cancel or saving or edit
 
 export default function EditSession({
@@ -62,6 +65,7 @@ export default function EditSession({
       await apiClient("/sessions", {
         method: "PUT",
         body: JSON.stringify({
+          sessionId: session.id,
           shareInFeed,
           ...formValues,
           sessionImageUrl: imageUrl,
@@ -70,7 +74,7 @@ export default function EditSession({
 
       showConfirmation();
     } catch (err) {
-      console.error("Error adding session: ", err);
+      console.error("Error updating session: ", err);
     }
   };
 
