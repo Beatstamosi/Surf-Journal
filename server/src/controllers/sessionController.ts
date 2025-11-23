@@ -11,6 +11,9 @@ const addSession = async (req: Request, res: Response) => {
     description,
     sessionImageUrl,
     boardId,
+    startTimeSession,
+    endTimeSession,
+    sessionRating,
   } = req.body;
   const user = req.user;
 
@@ -25,7 +28,9 @@ const addSession = async (req: Request, res: Response) => {
       // 2. Create session
       const session = await tx.session.create({
         data: {
-          startTime: savedForecast.date,
+          startTime: startTimeSession,
+          endTime: endTimeSession,
+          rating: sessionRating,
           description,
           sessionMatchForecast,
           image: sessionImageUrl ? sessionImageUrl : null,

@@ -38,7 +38,7 @@
 .formAddSession {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 3rem;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -61,6 +61,14 @@
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
+}
+
+.inputGroupTime {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  gap: 0.5rem;
+  width: 40%;
 }
 
 .inputGroup input[type="file"] {
@@ -288,12 +296,41 @@
   }
 }
 
+.ratingStars {
+  display: flex;
+  width: fit-content;
+  padding: 0px;
+  margin: 0px;
+}
+
+.ratingStars button {
+  padding: 0rem 1rem;
+}
+
+.star {
+  background: none;
+  border: none;
+  font-size: 3rem;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.star:hover {
+  transform: scale(1.1);
+}
+
+.starFilled {
+  color: var(--text-primary);
+  -webkit-text-stroke: 1px var(--text-primary);
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .formAddSession {
     width: 100%;
     max-width: 100%;
-    gap: 1.5rem;
     align-items: stretch;
     margin-bottom: 3.5rem;
   }
@@ -315,6 +352,11 @@
   }
 
   .inputGroup {
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+  .inputGroupTime {
     width: 100%;
   }
 
@@ -387,5 +429,13 @@
 
   .sessionAdded p:last-child {
     font-size: 1.1rem;
+  }
+
+  .star {
+    font-size: 1.25rem;
+  }
+
+  .ratingStars {
+    gap: 0.375rem;
   }
 }

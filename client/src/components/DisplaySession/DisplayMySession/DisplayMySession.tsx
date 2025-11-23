@@ -13,6 +13,8 @@ import ForecastDisplay from "../../ForecastDisplay/ForecastDisplay";
 import { transformForecastToReport } from "../../../utils/transformForecastToReport";
 import { apiClient } from "../../../utils/apiClient";
 import deleteSessionImageFromStorage from "../../../utils/deleteSessionImageFromStorage";
+import { calculateSessionDuration } from "../../../utils/calculateSessionDuration";
+import watchIcon from "../../../assets/watch.svg";
 
 interface DisplaySessionProps {
   session: Session;
@@ -36,6 +38,10 @@ export default function DisplayMySession({
   const forecast = session.forecast;
   const board = session.board;
   const ratingClass = style[getRatingClass(session.forecast?.ratingValue || 1)];
+  const sessionDuration = calculateSessionDuration(
+    session.startTime,
+    session.endTime
+  );
 
   // Format date for display
   const formatDate = (dateString: string) => {
@@ -235,6 +241,12 @@ export default function DisplayMySession({
                 </span>
               </div>
             )}
+
+            {/* Session Duration */}
+            <div className={style.boardDisplay}>
+              <img src={watchIcon} alt="" className={style.iconFilter} />
+              <span className={style.sessionDuration}>{sessionDuration}</span>
+            </div>
 
             {/* Session Notes */}
             <div className={style.sessionNotes}>

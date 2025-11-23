@@ -6,16 +6,14 @@ import ForecastDisplay from "../ForecastDisplay/ForecastDisplay";
 import uploadImageToSupaBase from "../../utils/uploadImageToSupaBase";
 import { useAuth } from "../Authentication/useAuth";
 import { transformForecastToReport } from "../../utils/transformForecastToReport";
+import { getRatingNumber, handleRatingClick } from "../../utils/ratingHelpers";
 
 // TODO
-// Update API to delete session
 // Update API to toggle share session on / off
 // --> toggle on create post
 // --> toggle off delete post
 // Update Session setEdit false
 // scrolling issue when clicking cancel or saving or edit
-
-// SESSIONS DO NOT UPDATE VIA SESSIONUPDATE
 
 export default function EditSession({
   session,
@@ -31,6 +29,9 @@ export default function EditSession({
   const [sessionUpdatedConfirmation, setSessionUpdatedConfirmation] =
     useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [sessionRating, setSessionRating] = useState<
+    "ZERO" | "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE"
+  >(session.rating || "ZERO");
   const { user } = useAuth();
 
   useEffect(() => {
@@ -55,6 +56,7 @@ export default function EditSession({
         sessionMatchForecast: formData.get("sessionMatchForecast") as string,
         description: formData.get("sessionNotes") as string,
         boardId: parseInt(formData.get("chooseBoard") as string, 10),
+        sessionRating: sessionRating,
       };
 
       if (selectedFile) {
@@ -112,7 +114,6 @@ export default function EditSession({
     <>
       <div className={style.header}>
         <h2 className={style.title}>Edit Your Session</h2>
-
       </div>
 
       <form onSubmit={handlerSaveSession} className={style.formAddSession}>
@@ -148,6 +149,27 @@ export default function EditSession({
               rows={4}
               defaultValue={session.description!}
             />
+          </div>
+
+          {/* Session Rating */}
+          <div className={style.inputGroup}>
+            <label className={style.label}>Rate your session</label>
+            <div className={style.ratingStars}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  className={`${style.star} ${
+                    star <= getRatingNumber(sessionRating)
+                      ? style.starFilled
+                      : ""
+                  }`}
+                  onClick={() => handleRatingClick(star, setSessionRating)}
+                >
+                  ★
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className={style.inputGroup}>

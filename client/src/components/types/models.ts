@@ -94,6 +94,8 @@ export interface Session {
   id: number;
   date: string;
   startTime: string;
+  endTime: string;
+  rating: "ZERO" | "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE";
   description?: string | null;
   sessionMatchForecast?: string | null;
   image?: string | null; // URL

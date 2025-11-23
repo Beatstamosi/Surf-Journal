@@ -41,6 +41,12 @@ export default function ForecastDisplay({
           </span>
         </div>
         <div className={style.forecastItem}>
+          <span className={style.forecastLabel}>Wave Energy</span>
+          <span className={style.forecastValue}>
+            {forecast.waveEnergy || "N/A"}
+          </span>
+        </div>
+        <div className={style.forecastItem}>
           <span className={style.forecastLabel}>Conditions</span>
           <span className={style.forecastValue}>{forecast.description}</span>
         </div>

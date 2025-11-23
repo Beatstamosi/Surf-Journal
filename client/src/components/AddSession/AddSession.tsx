@@ -8,24 +8,29 @@ import uploadImageToSupaBase from "../../utils/uploadImageToSupaBase";
 import { useAuth } from "../Authentication/useAuth";
 import { TimePicker } from "@mui/x-date-pickers";
 import type { PickerValue } from "@mui/x-date-pickers/internals";
+import { getRatingNumber, handleRatingClick } from "../../utils/ratingHelpers";
 
 // TODO:
-// get energy from api and add to forecast
-// --> update forecast model and report fn
-// update saveSession API to save dates correctly
-// add session rating
+// add error pop up if forecast cant be fetched
+// add error pop up if saveSession returns error
 
 export default function AddSession() {
   const [spotName, setSpotName] = useState("");
-  const [startTimeSession, setStartTimeSession] =
-    useState<PickerValue | null>();
-  const [endTimeSession, setEndTimeSession] = useState<PickerValue | null>();
+  const [startTimeSession, setStartTimeSession] = useState<PickerValue | null>(
+    null
+  );
+  const [endTimeSession, setEndTimeSession] = useState<PickerValue | null>(
+    null
+  );
   const [forecast, setForecast] = useState<ForecastReport | null>();
   const [boards, setBoards] = useState<Board[] | null>();
   const [shareInFeed, setShareInFeed] = useState(false);
   const [sessionAddedConfirmation, setSessionAddedConfirmation] =
     useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [sessionRating, setSessionRating] = useState<
+    "ZERO" | "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE"
+  >("ZERO");
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -71,6 +76,7 @@ export default function AddSession() {
         sessionMatchForecast: formData.get("sessionMatchForecast") as string,
         description: formData.get("sessionNotes") as string,
         boardId: parseInt(formData.get("chooseBoard") as string, 10),
+        sessionRating: sessionRating,
       };
 
       if (selectedFile) {
@@ -89,6 +95,9 @@ export default function AddSession() {
           shareInFeed,
           ...formValues,
           sessionImageUrl: imageUrl,
+          startTimeSession,
+          endTimeSession,
+          sessionRating,
         }),
       });
 
@@ -113,6 +122,7 @@ export default function AddSession() {
     setStartTimeSession(null);
     setEndTimeSession(null);
     setShareInFeed(false);
+    setSessionRating("ZERO");
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -153,7 +163,7 @@ export default function AddSession() {
             />
           </div>
 
-          <div className={style.inputGroup}>
+          <div className={style.inputGroupTime}>
             <label htmlFor="startTimeSession" className={style.label}>
               What time did you start your session?
             </label>
@@ -166,7 +176,7 @@ export default function AddSession() {
             />
           </div>
 
-          <div className={style.inputGroup}>
+          <div className={style.inputGroupTime}>
             <label htmlFor="endTimeSession" className={style.label}>
               What time did you end your session?
             </label>
@@ -252,6 +262,27 @@ export default function AddSession() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            {/* Session Rating */}
+            <div className={style.inputGroup}>
+              <label className={style.label}>Rate your session</label>
+              <div className={style.ratingStars}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    className={`${style.star} ${
+                      star <= getRatingNumber(sessionRating)
+                        ? style.starFilled
+                        : ""
+                    }`}
+                    onClick={() => handleRatingClick(star, setSessionRating)}
+                  >
+                    ★
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className={style.inputGroup}>
