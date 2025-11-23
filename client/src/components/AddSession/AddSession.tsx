@@ -63,6 +63,7 @@ export default function AddSession() {
       setForecast(data.report);
     } catch (err) {
       console.error("Error fetching forecast:", err);
+      setForecast(null);
     }
   };
 

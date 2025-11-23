@@ -15,6 +15,8 @@ const getForeCast = async (req: Request, res: Response) => {
 
     const report = await getSurfReport(sessionStart!, spotName as string);
 
+    if (!report) throw new Error("Report could not be fetched.");
+
     res.status(201).json({ report });
   } catch (err) {
     handleError(err, res);

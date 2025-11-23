@@ -1,0 +1,87 @@
+
+.errorOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.errorPopup {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.errorHeader {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: #fef2f2;
+  border-bottom: 1px solid #fecaca;
+}
+
+.errorIcon {
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+}
+
+.errorTitle {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #dc2626;
+  flex: 1;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  color: #6b7280;
+}
+
+.errorContent {
+  padding: 1.5rem;
+}
+
+.errorMessage {
+  margin: 0;
+  color: #374151;
+  line-height: 1.5;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .errorOverlay {
+    padding: 0.5rem;
+  }
+  
+  .errorHeader {
+    padding: 0.75rem 1rem;
+  }
+  
+  .errorContent {
+    padding: 1rem;
+  }
+}
