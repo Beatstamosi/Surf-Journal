@@ -63,6 +63,10 @@
   width: 100%;
 }
 
+.inputGroup input[type="file"] {
+  width: 50%;
+}
+
 .label {
   font-size: 0.875rem;
   font-weight: 600;
@@ -312,6 +316,10 @@
 
   .inputGroup {
     width: 100%;
+  }
+
+  .inputGroup input[type="file"] {
+    width: 90%;
   }
 
   .sessionAdded {

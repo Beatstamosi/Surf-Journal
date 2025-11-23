@@ -6,10 +6,20 @@ import ForecastDisplay from "../ForecastDisplay/ForecastDisplay";
 import { useNavigate } from "react-router-dom";
 import uploadImageToSupaBase from "../../utils/uploadImageToSupaBase";
 import { useAuth } from "../Authentication/useAuth";
+import { TimePicker } from "@mui/x-date-pickers";
+import type { PickerValue } from "@mui/x-date-pickers/internals";
+
+// TODO:
+// get energy from api and add to forecast
+// --> update forecast model and report fn
+// update saveSession API to save dates correctly
+// add session rating
 
 export default function AddSession() {
   const [spotName, setSpotName] = useState("");
-  const [startTimeSession, setStartTimeSession] = useState("");
+  const [startTimeSession, setStartTimeSession] =
+    useState<PickerValue | null>();
+  const [endTimeSession, setEndTimeSession] = useState<PickerValue | null>();
   const [forecast, setForecast] = useState<ForecastReport | null>();
   const [boards, setBoards] = useState<Board[] | null>();
   const [shareInFeed, setShareInFeed] = useState(false);
@@ -42,7 +52,7 @@ export default function AddSession() {
     try {
       const params = new URLSearchParams({
         spotName,
-        startTimeSession,
+        startTimeSession: startTimeSession?.toISOString() || "",
       });
       const data = await apiClient(`/forecast?${params.toString()}`);
       setForecast(data.report);
@@ -100,7 +110,8 @@ export default function AddSession() {
   const resetForm = () => {
     setForecast(null);
     setSpotName("");
-    setStartTimeSession("");
+    setStartTimeSession(null);
+    setEndTimeSession(null);
     setShareInFeed(false);
   };
 
@@ -146,30 +157,26 @@ export default function AddSession() {
             <label htmlFor="startTimeSession" className={style.label}>
               What time did you start your session?
             </label>
-            <select
+            <TimePicker
+              label={"Session Start"}
+              closeOnSelect={true}
               name="startTimeSession"
-              id="startTimeSession"
               value={startTimeSession}
-              onChange={(e) => setStartTimeSession(e.target.value)}
-              className={style.select}
-            >
-              <option value="">-- Select Start of your session --</option>
-              <option value="06:00">06:00am</option>
-              <option value="07:00">07:00am</option>
-              <option value="08:00">08:00am</option>
-              <option value="09:00">09:00am</option>
-              <option value="10:00">10:00am</option>
-              <option value="11:00">11:00am</option>
-              <option value="12:00">12:00pm</option>
-              <option value="13:00">01:00pm</option>
-              <option value="14:00">02:00pm</option>
-              <option value="15:00">03:00pm</option>
-              <option value="16:00">04:00pm</option>
-              <option value="17:00">05:00pm</option>
-              <option value="18:00">06:00pm</option>
-              <option value="19:00">07:00pm</option>
-              <option value="20:00">08:00pm</option>
-            </select>
+              onChange={(newValue) => setStartTimeSession(newValue)}
+            />
+          </div>
+
+          <div className={style.inputGroup}>
+            <label htmlFor="endTimeSession" className={style.label}>
+              What time did you end your session?
+            </label>
+            <TimePicker
+              label={"Session End"}
+              closeOnSelect={true}
+              name="endTimeSession"
+              value={endTimeSession}
+              onChange={(newValue) => setEndTimeSession(newValue)}
+            />
           </div>
 
           <div className={style.buttonGroup}>
