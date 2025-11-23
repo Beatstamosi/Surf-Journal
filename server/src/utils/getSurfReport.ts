@@ -39,15 +39,15 @@ export interface SurfReport {
 function getRatingDescription(rating: number): string {
   switch (rating) {
     case 1:
-      return "VERY POOR";
+      return "POOR";
     case 2:
       return "POOR";
     case 3:
       return "FAIR";
     case 4:
-      return "FAIR TO GOOD";
-    case 5:
       return "GOOD";
+    case 5:
+      return "EPIC";
     default:
       return "UNKNOWN";
   }

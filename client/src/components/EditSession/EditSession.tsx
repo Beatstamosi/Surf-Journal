@@ -14,6 +14,7 @@ import { getRatingNumber, handleRatingClick } from "../../utils/ratingHelpers";
 // --> toggle off delete post
 // Update Session setEdit false
 // scrolling issue when clicking cancel or saving or edit
+// implement error handler same as addSession
 
 export default function EditSession({
   session,
