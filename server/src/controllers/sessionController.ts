@@ -96,6 +96,7 @@ const updateSession = async (req: Request, res: Response) => {
     description,
     sessionImageUrl,
     boardId,
+    sessionRating,
   } = req.body;
   const user = req.user;
 
@@ -115,6 +116,7 @@ const updateSession = async (req: Request, res: Response) => {
           image: sessionImageUrl ? sessionImageUrl : null,
           shared: shareInFeed,
           boardId,
+          rating: sessionRating,
         },
         include: {
           forecast: {

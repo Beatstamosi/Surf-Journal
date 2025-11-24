@@ -57,7 +57,7 @@ export default function EditSession({
         sessionMatchForecast: formData.get("sessionMatchForecast") as string,
         description: formData.get("sessionNotes") as string,
         boardId: parseInt(formData.get("chooseBoard") as string, 10),
-        sessionRating: sessionRating,
+        sessionRating,
       };
 
       if (selectedFile) {

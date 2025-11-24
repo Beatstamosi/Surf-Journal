@@ -465,6 +465,27 @@
   font-weight: 300;
 }
 
+.ratingStars {
+  display: flex;
+  width: fit-content;
+  padding: 0px;
+  margin: 0px;
+}
+
+.star {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.starFilled {
+  color: var(--text-primary);
+  -webkit-text-stroke: 1px var(--text-primary);
+}
+
 /* Desktop Width Control */
 @media (min-width: 769px) {
   .sessionContainer {

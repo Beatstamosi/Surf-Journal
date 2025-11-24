@@ -7,6 +7,7 @@ import { MdDelete } from "react-icons/md";
 import { FaChevronDown } from "react-icons/fa";
 import surfBoardSessionSVG from "../../../assets/surfboard_session.svg";
 import radarSVG from "../../../assets/radar.svg";
+import watchIcon from "../../../assets/watch.svg";
 import EditSession from "../../EditSession/EditSession";
 import getRatingClass from "../../../utils/getRatingClass";
 import ForecastDisplay from "../../ForecastDisplay/ForecastDisplay";
@@ -14,7 +15,7 @@ import { transformForecastToReport } from "../../../utils/transformForecastToRep
 import { apiClient } from "../../../utils/apiClient";
 import deleteSessionImageFromStorage from "../../../utils/deleteSessionImageFromStorage";
 import { calculateSessionDuration } from "../../../utils/calculateSessionDuration";
-import watchIcon from "../../../assets/watch.svg";
+import { getRatingNumber } from "../../../utils/ratingHelpers";
 
 interface DisplaySessionProps {
   session: Session;
@@ -246,6 +247,24 @@ export default function DisplayMySession({
             <div className={style.boardDisplay}>
               <img src={watchIcon} alt="" className={style.iconFilter} />
               <span className={style.sessionDuration}>{sessionDuration}</span>
+            </div>
+
+            {/* Session Rating */}
+            <div className={style.boardDisplay}>
+              <div className={style.ratingStars}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    className={`${style.star} ${
+                      star <= getRatingNumber(session.rating)
+                        ? style.starFilled
+                        : ""
+                    }`}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
             </div>
 
             {/* Session Notes */}
