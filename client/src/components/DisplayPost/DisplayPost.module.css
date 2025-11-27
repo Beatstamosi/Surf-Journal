@@ -62,12 +62,6 @@
   gap: 1rem;
 }
 
-.rightActions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
 .actionButton {
   background: none;
   border: none;
@@ -298,8 +292,8 @@
   }
 
   .inputContainer {
-  max-width: calc(100% - 1.5rem);
-}
+    max-width: calc(100% - 1.5rem);
+  }
 }
 
 @media (max-width: 480px) {

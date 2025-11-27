@@ -133,15 +133,18 @@ const addComment = async (req: Request, res: Response) => {
     if (!postId) throw new Error("Missing postId.");
     if (!content) throw new Error("Missing content.");
 
-    await prisma.comment.create({
+    const comment = await prisma.comment.create({
       data: {
         postId: parseInt(postId),
         authorId: user.id,
         content,
       },
+      include: {
+        author: true,
+      },
     });
 
-    res.sendStatus(201);
+    res.status(201).json({ comment });
   } catch (err) {
     handleError(err, res);
   }
