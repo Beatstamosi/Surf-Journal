@@ -65,7 +65,8 @@ const likePost = async (req: Request, res: Response) => {
   const user = req.user;
 
   try {
-    if (!user || !postId) throw new Error("Missing user or postId.");
+    if (!user) throw new Error("Missing user Id");
+    if (!postId) throw new Error("Missing postId.");
 
     await prisma.like.create({
       data: {
@@ -80,4 +81,46 @@ const likePost = async (req: Request, res: Response) => {
   }
 };
 
-export { getAllUserPosts, unlikePost, likePost };
+const unsavePost = async (req: Request, res: Response) => {
+  const { postId } = req.params;
+  const user = req.user;
+
+  try {
+    if (!user) throw new Error("Missing user Id");
+    if (!postId) throw new Error("Missing postId.");
+
+    await prisma.savedPosts.delete({
+      where: {
+        userId_postId: {
+          postId: parseInt(postId),
+          userId: user.id,
+        },
+      },
+    });
+    res.sendStatus(204);
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+const savePost = async (req: Request, res: Response) => {
+  const { postId } = req.params;
+  const user = req.user;
+
+  try {
+    if (!user) throw new Error("Missing user Id");
+    if (!postId) throw new Error("Missing postId.");
+    await prisma.savedPosts.create({
+      data: {
+        postId: parseInt(postId),
+        userId: user.id,
+      },
+    });
+
+    res.sendStatus(201);
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+export { getAllUserPosts, unlikePost, likePost, unsavePost, savePost };
