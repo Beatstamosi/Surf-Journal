@@ -18,6 +18,7 @@ const getAllUserPosts = async (req: Request, res: Response) => {
             board: true,
           },
         },
+        creator: true,
         likes: {
           include: {
             user: true,
@@ -37,4 +38,46 @@ const getAllUserPosts = async (req: Request, res: Response) => {
   }
 };
 
-export { getAllUserPosts };
+const unlikePost = async (req: Request, res: Response) => {
+  const { postId } = req.params;
+  const user = req.user;
+
+  try {
+    if (!user || !postId) throw new Error("Missing user or postId.");
+
+    await prisma.like.delete({
+      where: {
+        postId_userId: {
+          postId: parseInt(postId),
+          userId: user.id,
+        },
+      },
+    });
+
+    res.sendStatus(204);
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+const likePost = async (req: Request, res: Response) => {
+  const { postId } = req.params;
+  const user = req.user;
+
+  try {
+    if (!user || !postId) throw new Error("Missing user or postId.");
+
+    await prisma.like.create({
+      data: {
+        postId: parseInt(postId),
+        userId: user.id,
+      },
+    });
+
+    res.sendStatus(201);
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+export { getAllUserPosts, unlikePost, likePost };

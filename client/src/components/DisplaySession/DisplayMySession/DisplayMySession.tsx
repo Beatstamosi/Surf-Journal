@@ -16,6 +16,7 @@ import { apiClient } from "../../../utils/apiClient";
 import deleteSessionImageFromStorage from "../../../utils/deleteSessionImageFromStorage";
 import { calculateSessionDuration } from "../../../utils/calculateSessionDuration";
 import { getRatingNumber } from "../../../utils/ratingHelpers";
+import { useAuth } from "../../Authentication/useAuth";
 
 interface DisplaySessionProps {
   session: Session;
@@ -40,6 +41,8 @@ export default function DisplayMySession({
     session.startTime,
     session.endTime
   );
+  const { user } = useAuth();
+  const isOwner = session.userId === user?.id;
 
   // Format date for display
   const formatDate = (dateString: string) => {
@@ -140,47 +143,52 @@ export default function DisplayMySession({
       ) : (
         <>
           {/* 3-dot dropdown menu */}
-          <div className={style.menuContainer} ref={menuRef}>
-            <button
-              className={style.menuButton}
-              onClick={handleMenuToggle}
-              title="More options"
-            >
-              <CiMenuKebab size={"1.5em"} />
-            </button>
+          {isOwner && (
+            <div className={style.menuContainer} ref={menuRef}>
+              <button
+                className={style.menuButton}
+                onClick={handleMenuToggle}
+                title="More options"
+              >
+                <CiMenuKebab size={"1.5em"} />
+              </button>
 
-            {isMenuOpen && (
-              <div className={style.dropdownMenu}>
-                <div className={style.menuItem}>
-                  <label className={style.menuToggle}>
-                    <span>Share</span>
-                    <div className={style.toggleContainer}>
-                      <input
-                        type="checkbox"
-                        checked={isShared}
-                        onChange={handleToggleShared}
-                        className={style.toggleInput}
-                      />
-                      <span className={style.toggleSlider}></span>
-                    </div>
-                  </label>
+              {isMenuOpen && (
+                <div className={style.dropdownMenu}>
+                  <div className={style.menuItem}>
+                    <label className={style.menuToggle}>
+                      <span>Share</span>
+                      <div className={style.toggleContainer}>
+                        <input
+                          type="checkbox"
+                          checked={isShared}
+                          onChange={handleToggleShared}
+                          className={style.toggleInput}
+                        />
+                        <span className={style.toggleSlider}></span>
+                      </div>
+                    </label>
+                  </div>
+                  <button
+                    className={style.menuItem}
+                    onClick={handleEditSession}
+                  >
+                    <FaEdit />
+                    <span>Edit session</span>
+                  </button>
+                  <button
+                    className={`${style.menuItem} ${style.deleteItem}`}
+                    onClick={handleDeleteSession}
+                  >
+                    <MdDelete />
+                    <span>Delete session</span>
+                  </button>
                 </div>
-                <button className={style.menuItem} onClick={handleEditSession}>
-                  <FaEdit />
-                  <span>Edit session</span>
-                </button>
-                <button
-                  className={`${style.menuItem} ${style.deleteItem}`}
-                  onClick={handleDeleteSession}
-                >
-                  <MdDelete />
-                  <span>Delete session</span>
-                </button>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
 
-          {/* Session Header with 3-dot menu */}
+          {/* Session Header */}
           <div className={style.sessionHeader}>
             <div className={style.sessionInfo}>
               <h2 className={style.spotName}>{forecast?.spotName}</h2>

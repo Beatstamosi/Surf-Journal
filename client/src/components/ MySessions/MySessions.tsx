@@ -121,7 +121,8 @@ export default function MySessions() {
             if (!item) return false;
 
             if (isPost(item)) {
-              return <DisplayPost key={item.id} post={item} />;
+              return <DisplayPost key={item.id} post={item} onSessionUpdate={updateSession}
+                  onSessionDelete={deleteSession} />;
             } else {
               return (
                 <DisplayMySession
