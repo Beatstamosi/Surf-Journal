@@ -16,8 +16,8 @@ import DisplayMySession from "../DisplaySession/DisplayMySession/DisplayMySessio
 
 interface DisplayPostProps {
   post: Post;
-  onSessionUpdate: (updatedSession: Session) => void;
-  onSessionDelete: (sessionToDelete: Session) => void;
+  onSessionUpdate?: (updatedSession: Session) => void;
+  onSessionDelete?: (sessionToDelete: Session) => void;
 }
 
 export default function DisplayPost({

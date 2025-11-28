@@ -20,8 +20,8 @@ import { useAuth } from "../../Authentication/useAuth";
 
 interface DisplaySessionProps {
   session: Session;
-  onSessionUpdate: (updatedSession: Session) => void;
-  onSessionDelete: (sessionToDelete: Session) => void;
+  onSessionUpdate?: (updatedSession: Session) => void;
+  onSessionDelete?: (sessionToDelete: Session) => void;
 }
 
 export default function DisplayMySession({
@@ -42,7 +42,8 @@ export default function DisplayMySession({
     session.endTime
   );
   const { user } = useAuth();
-  const isOwner = session.userId === user?.id;
+  const isOwner =
+    session.userId === user?.id && onSessionDelete && onSessionUpdate;
 
   // Format date for display
   const formatDate = (dateString: string) => {
@@ -111,7 +112,8 @@ export default function DisplayMySession({
       if (session.image) {
         await deleteSessionImageFromStorage(session.image);
       }
-      onSessionDelete(session);
+
+      if (onSessionDelete) onSessionDelete(session);
     } catch (err) {
       console.error(err);
     }
@@ -126,7 +128,8 @@ export default function DisplayMySession({
         method: "PUT",
         body: JSON.stringify({ sessionId: session.id, shared: session.shared }),
       });
-      onSessionUpdate(response.updatedSession);
+
+      if (onSessionUpdate) onSessionUpdate(response.updatedSession);
     } catch (err) {
       console.error(err);
     }
@@ -134,7 +137,7 @@ export default function DisplayMySession({
 
   return (
     <div className={style.sessionContainer}>
-      {editSession ? (
+      {editSession && isOwner ? (
         <EditSession
           session={session}
           setEditSession={setEditSession}
