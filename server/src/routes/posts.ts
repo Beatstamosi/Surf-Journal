@@ -8,6 +8,9 @@ import {
   savePost,
   addComment,
   getAllFeedPosts,
+  getLikedFeedPosts,
+  getSavedFeedPosts,
+  getFollowingFeedPosts,
 } from "../controllers/postsController.js";
 
 const postsRouter = Router();
@@ -21,5 +24,8 @@ postsRouter.delete("/:postId/unsave", unsavePost);
 postsRouter.post("/:postId/save", savePost);
 postsRouter.post("/:postId/comments", addComment);
 postsRouter.get("/feed/all", getAllFeedPosts);
+postsRouter.get("/feed/liked", getLikedFeedPosts);
+postsRouter.get("/feed/saved", getSavedFeedPosts);
+postsRouter.get("/feed/following", getFollowingFeedPosts);
 
 export default postsRouter;

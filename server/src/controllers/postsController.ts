@@ -186,6 +186,147 @@ const getAllFeedPosts = async (req: Request, res: Response) => {
   }
 };
 
+const getLikedFeedPosts = async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+  try {
+    if (!userId) throw new Error("Missing user Id");
+
+    const posts = await prisma.post.findMany({
+      where: {
+        likes: {
+          some: {
+            userId: userId,
+          },
+        },
+        session: {
+          shared: true,
+        },
+      },
+      include: {
+        session: {
+          include: {
+            forecast: true,
+            board: true,
+          },
+        },
+        creator: true,
+        likes: true,
+        comments: {
+          include: {
+            author: true,
+          },
+        },
+        savedBy: true,
+      },
+    });
+
+    res.status(201).json({ posts });
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+const getSavedFeedPosts = async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+  try {
+    if (!userId) throw new Error("Missing user Id");
+
+    const posts = await prisma.post.findMany({
+      where: {
+        savedBy: {
+          some: {
+            userId: userId,
+          },
+        },
+        session: {
+          shared: true,
+        },
+      },
+      include: {
+        session: {
+          include: {
+            forecast: true,
+            board: true,
+          },
+        },
+        creator: true,
+        likes: true,
+        comments: {
+          include: {
+            author: true,
+          },
+        },
+        savedBy: true,
+      },
+    });
+
+    res.status(201).json({ posts });
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+const getFollowingFeedPosts = async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+  try {
+    if (!userId) throw new Error("Missing user Id");
+
+    // Get the users that the current user is following
+    const userFollowing = await prisma.userFollowing.findMany({
+      where: {
+        userId: userId, // Current user is the follower
+      },
+      select: {
+        followingUserId: true,
+      },
+    });
+
+    const followingUserIds = userFollowing.map(
+      (follow) => follow.followingUserId
+    );
+
+    // If user isn't following anyone, return empty array
+    if (followingUserIds.length === 0) {
+      return res.status(200).json({ posts: [] });
+    }
+
+    // Then get posts from those users
+    const posts = await prisma.post.findMany({
+      where: {
+        creatorId: {
+          in: followingUserIds, // Posts from users that current user follows
+        },
+        session: {
+          shared: true,
+        },
+      },
+      include: {
+        session: {
+          include: {
+            forecast: true,
+            board: true,
+          },
+        },
+        creator: true,
+        likes: true,
+        comments: {
+          include: {
+            author: true,
+          },
+        },
+        savedBy: true,
+      },
+      orderBy: {
+        posted: "desc",
+      },
+    });
+
+    res.status(200).json({ posts });
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
 export {
   getAllUserPosts,
   unlikePost,
@@ -194,4 +335,7 @@ export {
   savePost,
   addComment,
   getAllFeedPosts,
+  getLikedFeedPosts,
+  getSavedFeedPosts,
+  getFollowingFeedPosts,
 };

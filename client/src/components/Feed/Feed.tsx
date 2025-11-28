@@ -1,4 +1,4 @@
-import type { Post, User } from "../types/models";
+import type { Post } from "../types/models";
 import { useEffect, useState } from "react";
 import style from "./Feed.module.css";
 import { apiClient } from "../../utils/apiClient";
@@ -6,47 +6,39 @@ import DisplayPost from "../DisplayPost/DisplayPost";
 
 export default function Feed() {
   const [posts, setPosts] = useState<Post[] | null>();
-  const [usersFollowing, setUsersFollowing] = useState<User[] | null>();
-  const [displayPosts, setDisplayPosts] = useState<Post[] | null>();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
 
-  // useEffect fetch posts
+  // Fetch posts based on active filter
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const data = await apiClient("/posts/feed/all");
+        const endpoint = getEndpointForFilter(activeFilter);
+        const data = await apiClient(endpoint);
         setPosts(data.posts);
       } catch (err) {
         console.error("Error fetching posts: ", err);
       }
     };
     fetchPosts();
-  }, []);
+  }, [activeFilter]);
 
-  // useEffect set displayPosts based on view
-  useEffect(() => {
-    setDisplayPosts(posts);
-  }, [posts]);
-
-  // get users following
-  useEffect(() => {
-    const fetchUsersFollowing = async () => {
-      try {
-        const data = await apiClient("/user/following");
-        setUsersFollowing(data.userFollowing);
-      } catch (err) {
-        console.error("Error fetching usersFollowing: ", err);
-      }
-    };
-    fetchUsersFollowing();
-  }, []);
-
-  // set displayPosts based on filter
-  useEffect(() => {}, [activeFilter]);
+  const getEndpointForFilter = (filter: string) => {
+    switch (filter) {
+      case "liked":
+        return "/posts/feed/liked";
+      case "saved":
+        return "/posts/feed/saved";
+      case "following":
+        return "/posts/feed/following";
+      case "all":
+      default:
+        return "/posts/feed/all";
+    }
+  };
 
   // Filter based on search query
-  const filteredPosts = displayPosts?.filter((post) => {
+  const filteredPosts = posts?.filter((post) => {
     return post.session?.forecast?.spotName
       ?.toLowerCase()
       .includes(searchQuery.toLowerCase());
@@ -110,11 +102,7 @@ export default function Feed() {
         ) : (
           <div className={style.emptyState}>
             <h3>No sessions found</h3>
-            <p>
-              {searchQuery
-                ? "Try adjusting your search"
-                : "Start by adding your first surf session!"}
-            </p>
+            <p>{searchQuery && "Try adjusting your search"}</p>
           </div>
         )}
       </div>
