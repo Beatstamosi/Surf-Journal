@@ -5,7 +5,7 @@
 
 /* SideBar */
 .pageWrapperDesktop > :first-child {
-  width: 240px; /* Fixed sidebar width */
+  width: 180px; /* Fixed sidebar width */
   background-color: var(--bg-primary);
   position: sticky;
   top: 0;
