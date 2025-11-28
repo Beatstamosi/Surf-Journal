@@ -6,6 +6,8 @@ import type { User, Board, Session, Post } from "../types/models";
 import { useAuth } from "../Authentication/useAuth";
 import DisplayPost from "../DisplayPost/DisplayPost";
 import surfBoardSessionSVG from "../../assets/surfboard_session.svg";
+import { Link } from "react-router-dom";
+import { FiEdit } from "react-icons/fi";
 
 interface PublicUser extends User {
   boards: Board[];
@@ -100,6 +102,11 @@ export default function ViewPublicProfile() {
             <h1 className={style.userName}>
               {profileData.firstName} {profileData.lastName}
             </h1>
+            {isOwnProfile && (
+              <Link to="/edit-profile">
+                <FiEdit />
+              </Link>
+            )}
             {!isOwnProfile && (
               <button
                 className={`${style.followButton} ${

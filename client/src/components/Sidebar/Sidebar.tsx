@@ -4,13 +4,15 @@ import { GiWaveSurfer } from "react-icons/gi";
 import { MdOutlineSurfing } from "react-icons/md";
 import { GiSurferVan } from "react-icons/gi";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import { FaUserEdit } from "react-icons/fa";
+import { FaUserAstronaut } from "react-icons/fa6";
 import surfLogLogo from "../../assets/surflog_logo_bw.png";
 import LogOutBtn from "../Authentication/LogOut/LogOutBtn";
+import { useAuth } from "../Authentication/useAuth";
 
 export default function Sidebar() {
   const location = useLocation();
   const currentPath = location.pathname;
+  const { user } = useAuth();
 
   return (
     <div className={style.sidebarWrapper}>
@@ -64,12 +66,12 @@ export default function Sidebar() {
         </Link>
 
         <Link
-          to="/edit-profile"
+          to={`/user/${user?.id}`}
           className={`${style.sidebarLink} ${
-            currentPath === "/edit-profile" ? style.active : ""
+            currentPath === `/user/${user?.id}` ? style.active : ""
           }`}
         >
-          <FaUserEdit size={"1.5em"} />
+          <FaUserAstronaut size={"1.5em"} />
           My Profile
         </Link>
       </div>

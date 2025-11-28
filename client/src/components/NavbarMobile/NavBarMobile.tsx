@@ -4,12 +4,14 @@ import { useLocation } from "react-router-dom";
 import { GiWaveSurfer } from "react-icons/gi";
 import { MdOutlineSurfing } from "react-icons/md";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import { FaUserEdit } from "react-icons/fa";
+import { FaUserAstronaut } from "react-icons/fa6";
 import { GiSurferVan } from "react-icons/gi";
+import { useAuth } from "../Authentication/useAuth";
 
 export default function NavBarMobile() {
   const location = useLocation();
   const currentPath = location.pathname;
+  const { user } = useAuth();
 
   return (
     <div className={style.navBarMobileWrapper}>
@@ -59,12 +61,12 @@ export default function NavBarMobile() {
 
       <div className={style.navNarBlock}>
         <Link
-          to="/edit-profile"
+          to={`/user/${user?.id}`}
           className={`${style.navBarLink} ${
-            currentPath === "/edit-profile" ? style.active : ""
+            currentPath === `/user/${user?.id}` ? style.active : ""
           }`}
         >
-          <FaUserEdit size={"2em"} />
+          <FaUserAstronaut size={"1.85em"} />
         </Link>
       </div>
     </div>
