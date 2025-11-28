@@ -31,4 +31,55 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-export { updateUser, deleteUser };
+const getPublicUserProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = parseInt(req.params.profileId);
+    const currentUserId = req.user?.id;
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        boards: true,
+        sessions: true,
+        _count: {
+          select: {
+            followers: true,
+            following: true,
+          },
+        },
+        followers: {
+          where: {
+            userId: currentUserId, // Check if current user follows this user
+          },
+        },
+        posts: {
+          include: {
+            session: {
+              include: {
+                forecast: true,
+              },
+            },
+            creator: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Transform the data to include isFollowing
+    const userWithFollowStatus = {
+      ...user,
+      isFollowing: user.followers.length > 0,
+      followers: undefined, // Remove the followers array from response
+    };
+
+    res.status(200).json({ user: userWithFollowStatus });
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
+export { updateUser, deleteUser, getPublicUserProfile };
