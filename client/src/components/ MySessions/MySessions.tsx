@@ -49,7 +49,7 @@ export default function MySessions() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const data = await apiClient("/posts/user/all");
+        const data = await apiClient("/posts/feed/all");
         setPosts(data.posts);
       } catch (err) {
         console.error("Error fetching posts: ", err);
