@@ -85,9 +85,9 @@ export default function MySessions() {
   return (
     <div className={style.container}>
       <div className={style.header}>
-        <div className={style.filterBtnWrapper}>
+        <div className={style.filterButtons}>
           <button
-            className={`${style.filterBtn} ${
+            className={`${style.filterButton} ${
               view === "sessions" ? style.filterBtnActive : ""
             }`}
             onClick={() => setView("sessions")}
@@ -95,7 +95,7 @@ export default function MySessions() {
             Private Sessions
           </button>
           <button
-            className={`${style.filterBtn} ${
+            className={`${style.filterButton} ${
               view === "posts" ? style.filterBtnActive : ""
             }`}
             onClick={() => setView("posts")}
