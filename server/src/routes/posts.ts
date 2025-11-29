@@ -11,9 +11,13 @@ import {
   getLikedFeedPosts,
   getSavedFeedPosts,
   getFollowingFeedPosts,
+  getSinglePost,
 } from "../controllers/postsController.js";
 
 const postsRouter = Router();
+
+// no validation needed as it is a shared public link
+postsRouter.get("/:postId", getSinglePost);
 
 postsRouter.use(validateJWTToken);
 

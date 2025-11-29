@@ -100,18 +100,32 @@ export default function DisplayPost({
 
   const handleShare = async () => {
     try {
+      if (!post?.id) {
+        alert("Post not available for sharing");
+        return;
+      }
+
+      const shareUrl = `${window.location.origin}/post/${post.id}`;
+      const spotName = forecast?.spotName || "a surf spot";
+
       if (navigator.share) {
         await navigator.share({
-          title: `${creator?.firstName}'s surf session at ${forecast?.spotName}`,
-          text: `Check out this surf session!`,
-          url: window.location.href,
+          title: `${creator?.firstName}'s surf session at ${spotName}`,
+          text: `Check out this surf session at ${spotName}!`,
+          url: shareUrl,
         });
       } else {
-        await navigator.clipboard.writeText(window.location.href);
+        await navigator.clipboard.writeText(shareUrl);
         alert("Link copied to clipboard!");
       }
     } catch (err) {
       console.error("Error sharing:", err);
+
+      // Type assertion approach
+      const error = err as Error;
+      if (error.name !== "AbortError") {
+        alert("Failed to share post");
+      }
     }
   };
 
@@ -209,7 +223,7 @@ export default function DisplayPost({
             {comments.map((comment) => (
               <div key={comment.id} className={style.commentItem}>
                 <img
-                  src={comment.author?.profilePicture || "/default-avatar.jpg"}
+                  src={comment.author?.profilePicture}
                   alt={`${comment.author?.firstName}`}
                   className={style.commentAvatar}
                 />
@@ -229,8 +243,6 @@ export default function DisplayPost({
           </div>
         )}
       </div>
-
-      {/* // TODO: handleSubmitComment author missing */}
 
       {/* Add Comment Form */}
       <div className={style.inputContainer}>

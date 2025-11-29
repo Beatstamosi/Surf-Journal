@@ -56,7 +56,7 @@ export default function MyProfile() {
         }),
       });
 
-      navigate(0);
+      navigate(`/user/${user?.id}`);
     } catch (err) {
       console.error("Error updating profile:", err);
       navigate("/error");
@@ -144,7 +144,10 @@ export default function MyProfile() {
         >
           Delete Account
         </button>
-        <button className={style.btnSecondary} onClick={() => navigate("/")}>
+        <button
+          className={style.btnSecondary}
+          onClick={() => navigate(`/user/${user?.id}`)}
+        >
           Cancel
         </button>
       </div>

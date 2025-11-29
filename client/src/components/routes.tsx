@@ -9,6 +9,7 @@ import AddSession from "./AddSession/AddSession.js";
 import MyQuiver from "./MyQuiver/MyQuiver.js";
 import MyProfile from "./MyProfile/MyProfile.js";
 import ViewPublicProfile from "./ViewPublicProfile/ViewPublicProfile.js";
+import ViewPublicPost from "./ViewPublicPost/ViewPublicPost.js";
 
 const routes = [
   {
@@ -53,6 +54,10 @@ const routes = [
   {
     path: "/sign-up",
     element: <SignUp />,
+  },
+  {
+    path: "/post/:postId",
+    element: <ViewPublicPost />,
   },
 ];
 

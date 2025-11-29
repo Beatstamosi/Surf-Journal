@@ -327,6 +327,42 @@ const getFollowingFeedPosts = async (req: Request, res: Response) => {
   }
 };
 
+const getSinglePost = async (req: Request, res: Response) => {
+  const { postId } = req.params;
+
+  try {
+    const post = await prisma.post.findFirst({
+      where: {
+        id: parseInt(postId),
+      },
+      include: {
+        session: {
+          include: {
+            forecast: true,
+            board: true,
+          },
+        },
+        creator: true,
+        likes: {
+          include: {
+            user: true,
+          },
+        },
+        comments: {
+          include: {
+            author: true,
+          },
+        },
+        savedBy: true,
+      },
+    });
+
+    res.status(201).json({ post });
+  } catch (err) {
+    handleError(err, res);
+  }
+};
+
 export {
   getAllUserPosts,
   unlikePost,
@@ -338,4 +374,5 @@ export {
   getLikedFeedPosts,
   getSavedFeedPosts,
   getFollowingFeedPosts,
+  getSinglePost,
 };
