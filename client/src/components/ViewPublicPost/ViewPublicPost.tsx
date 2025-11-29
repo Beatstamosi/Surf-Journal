@@ -11,6 +11,7 @@ import { apiClient } from "../../utils/apiClient";
 import { useAuth } from "../Authentication/useAuth";
 import DisplayMySession from "../DisplaySession/DisplayMySession/DisplayMySession";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import logo from "../../assets/surflog_logo_bw.png";
 
 export default function ViewPublicPost() {
   const { user } = useAuth();
@@ -60,7 +61,10 @@ export default function ViewPublicPost() {
   if (!post) return <div>Loading...</div>;
 
   return (
-    <div className={style.publicPostWrapper} >
+    <div className={style.publicPostWrapper}>
+      <div className={style.logoWrapper}>
+        <img src={logo} alt="Surflog Logo" onClick={() => navigate("/")} />
+      </div>
       <div className={style.postContainer}>
         {/* Post Header with Creator Info */}
 
@@ -144,7 +148,7 @@ export default function ViewPublicPost() {
       </div>
 
       <div>
-        <Link to={"/login"}>Login to interact with session.</Link>
+        <Link to={"/login"}> → Login to interact with session.</Link>
       </div>
     </div>
   );

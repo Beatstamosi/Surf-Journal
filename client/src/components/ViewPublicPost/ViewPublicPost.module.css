@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 4em;
+  gap: 2em;
 }
 
 .postContainer {
@@ -17,6 +17,11 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.logoWrapper img {
+  width: 10em;
+  cursor: pointer;
 }
 
 /* Post Header with Creator */
@@ -148,6 +153,10 @@
 
 /* Desktop */
 @media (min-width: 769px) {
+  .publicPostWrapper {
+    padding: 4em;
+  }
+
   .postContainer {
     max-width: 600px;
     margin: 0 auto 1.5rem;
@@ -158,6 +167,10 @@
 
 /* Mobile */
 @media (max-width: 768px) {
+  .publicPostWrapper {
+    padding: 1em;
+  }
+
   .postHeader {
     padding: 0.875rem 1rem;
   }
