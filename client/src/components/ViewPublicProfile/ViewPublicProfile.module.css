@@ -88,6 +88,8 @@
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: fit-content;
+  margin-top: 0em;
 }
 
 .followButton.following {
