@@ -20,6 +20,10 @@
   background: transparent;
 }
 
+.postHeader a {
+  text-decoration: none;
+}
+
 .creatorInfo {
   display: flex;
   align-items: center;
