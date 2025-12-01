@@ -6,10 +6,8 @@ import DisplayPost from "../DisplayPost/DisplayPost";
 import DisplayMySession from "../DisplaySession/DisplayMySession/DisplayMySession";
 
 export default function MySessions() {
-  const [sessions, setSessions] = useState<Session[] | null>();
-  const [posts, setPosts] = useState<Post[] | null>();
   const [view, setView] = useState<"sessions" | "posts">("sessions");
-  const [displaySessions, setDisplaySessions] = useState<
+  const [displaySessionsOrPosts, setDisplaySessionsOrPosts] = useState<
     Session[] | Post[] | null
   >();
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,57 +16,43 @@ export default function MySessions() {
     return "creatorId" in item;
   };
 
-  const updateSession = (updatedSession: Session) => {
-    setSessions((prevSessions) =>
-      prevSessions?.map((session) =>
-        session.id === updatedSession.id ? updatedSession : session
-      )
-    );
+  const updateSession = () => {
+    if (view === "posts") {
+      fetchPosts();
+    } else {
+      fetchSessions();
+    }
   };
 
-  const deleteSession = (sessionToDelete: Session) => {
-    setSessions((prevSessions) =>
-      prevSessions?.filter((session) => session.id !== sessionToDelete.id)
-    );
+  const fetchSessions = async () => {
+    try {
+      const data = await apiClient("/sessions/user/all");
+      setDisplaySessionsOrPosts(data.sessions);
+    } catch (err) {
+      console.error("Error fetching sessions: ", err);
+    }
   };
 
-  // useEffect fetch Sessions
-  useEffect(() => {
-    const fetchSessions = async () => {
-      try {
-        const data = await apiClient("/sessions/user/all");
-        setSessions(data.sessions);
-      } catch (err) {
-        console.error("Error fetching sessions: ", err);
-      }
-    };
-    fetchSessions();
-  }, []);
-
-  // useEffect fetch posts
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const data = await apiClient("/posts/feed/all");
-        setPosts(data.posts);
-      } catch (err) {
-        console.error("Error fetching posts: ", err);
-      }
-    };
-    fetchPosts();
-  }, []);
+  const fetchPosts = async () => {
+    try {
+      const data = await apiClient("/posts/feed/all");
+      setDisplaySessionsOrPosts(data.posts);
+    } catch (err) {
+      console.error("Error fetching posts: ", err);
+    }
+  };
 
   // useEffect set displaySessions based on view
   useEffect(() => {
     if (view === "sessions") {
-      setDisplaySessions(sessions);
+      fetchSessions();
     } else if (view === "posts") {
-      setDisplaySessions(posts);
+      fetchPosts();
     }
-  }, [view, sessions, posts]);
+  }, [view]);
 
   // Filter based on search query
-  const filteredSessions = displaySessions?.filter((item) => {
+  const filteredSessions = displaySessionsOrPosts?.filter((item) => {
     if (isPost(item)) {
       // Post has a session relation
       return item.session?.forecast?.spotName
@@ -121,15 +105,19 @@ export default function MySessions() {
             if (!item) return false;
 
             if (isPost(item)) {
-              return <DisplayPost key={item.id} post={item} onSessionUpdate={updateSession}
-                  onSessionDelete={deleteSession} />;
+              return (
+                <DisplayPost
+                  key={item.id}
+                  post={item}
+                  onSessionUpdate={updateSession}
+                />
+              );
             } else {
               return (
                 <DisplayMySession
                   key={item.id}
                   session={item}
                   onSessionUpdate={updateSession}
-                  onSessionDelete={deleteSession}
                 />
               );
             }

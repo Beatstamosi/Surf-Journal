@@ -20,14 +20,12 @@ import { useAuth } from "../../Authentication/useAuth";
 
 interface DisplaySessionProps {
   session: Session;
-  onSessionUpdate?: (updatedSession: Session) => void;
-  onSessionDelete?: (sessionToDelete: Session) => void;
+  onSessionUpdate?: () => void;
 }
 
 export default function DisplayMySession({
   session,
   onSessionUpdate,
-  onSessionDelete,
 }: DisplaySessionProps) {
   const [isShared, setIsShared] = useState(session.shared);
   const [isForecastOpen, setIsForecastOpen] = useState(false);
@@ -43,7 +41,7 @@ export default function DisplayMySession({
   );
   const { user } = useAuth();
   const isOwner =
-    session.userId === user?.id && onSessionDelete && onSessionUpdate;
+    session.userId === user?.id && onSessionUpdate && onSessionUpdate;
 
   // Format date for display
   const formatDate = (dateString: string) => {
@@ -113,7 +111,7 @@ export default function DisplayMySession({
         await deleteSessionImageFromStorage(session.image);
       }
 
-      if (onSessionDelete) onSessionDelete(session);
+      if (onSessionUpdate) onSessionUpdate();
     } catch (err) {
       console.error(err);
     }
@@ -124,12 +122,12 @@ export default function DisplayMySession({
     setIsShared(e.target.checked);
 
     try {
-      const response = await apiClient("/sessions/shared", {
+      await apiClient("/sessions/shared", {
         method: "PUT",
         body: JSON.stringify({ sessionId: session.id, shared: session.shared }),
       });
 
-      if (onSessionUpdate) onSessionUpdate(response.updatedSession);
+      if (onSessionUpdate) onSessionUpdate();
     } catch (err) {
       console.error(err);
     }

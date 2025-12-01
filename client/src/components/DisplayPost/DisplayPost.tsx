@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Post, Session } from "../types/models";
+import type { Post } from "../types/models";
 import style from "./DisplayPost.module.css";
 import {
   FaHeart,
@@ -17,14 +17,12 @@ import { Link } from "react-router-dom";
 
 interface DisplayPostProps {
   post: Post;
-  onSessionUpdate?: (updatedSession: Session) => void;
-  onSessionDelete?: (sessionToDelete: Session) => void;
+  onSessionUpdate?: () => void;
 }
 
 export default function DisplayPost({
   post,
   onSessionUpdate,
-  onSessionDelete,
 }: DisplayPostProps) {
   const { user } = useAuth();
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
@@ -179,7 +177,6 @@ export default function DisplayPost({
         <DisplayMySession
           session={post.session!}
           onSessionUpdate={onSessionUpdate}
-          onSessionDelete={onSessionDelete}
         />
       </div>
 
