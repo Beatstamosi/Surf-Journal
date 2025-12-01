@@ -36,10 +36,10 @@
 }
 
 .boardCard {
-  background: var(--bg-primary);
+  background: var(--color-blue);
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   border: 2px solid transparent;
   position: relative;
@@ -47,20 +47,10 @@
   position: relative;
 }
 
-.boardCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--color-sky), var(--color-orange));
-}
-
 .boardName {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--color-navy);
+  color: var(--color-white);
   margin-bottom: 1rem;
 }
 
@@ -78,12 +68,12 @@
 }
 
 .boardLabel {
-  color: var(--text-secondary);
+  color: var(--color-black);
   font-weight: 500;
 }
 
 .boardValue {
-  color: var(--text-primary);
+  color: var(--color-white);
   font-weight: 600;
 }
 
@@ -224,7 +214,7 @@
   background-color: transparent;
   border: none;
   border-radius: 8px;
-  color: var(--text-secondary);
+  color: var(--color-black);
   cursor: pointer;
   transition: all 0.3s ease-out;
   display: flex;
