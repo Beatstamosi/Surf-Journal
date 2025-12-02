@@ -31,6 +31,7 @@ export default function DisplayMySession({
   const [isForecastOpen, setIsForecastOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [editSession, setEditSession] = useState(false);
+  const [sessionSharedToggled, setSessionSharedToggled] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const forecast = session.forecast;
   const board = session.board;
@@ -127,11 +128,31 @@ export default function DisplayMySession({
         body: JSON.stringify({ sessionId: session.id, shared: session.shared }),
       });
 
-      if (onSessionUpdate) onSessionUpdate();
+      showToggleConfirmation();
     } catch (err) {
       console.error(err);
     }
   };
+
+  const showToggleConfirmation = () => {
+    setSessionSharedToggled(true);
+
+    setTimeout(() => {
+      setSessionSharedToggled(false);
+      if (onSessionUpdate) onSessionUpdate();
+    }, 1500);
+  };
+
+  if (sessionSharedToggled) {
+    const emoji = session.shared === true ? "🚫" : "🤙";
+    const info = session.shared === true ? "unshared" : "shared";
+    return (
+      <div className={style.sessionSharedToggle}>
+        <p>{emoji}</p>
+        <p>Session {info} successfully!</p>
+      </div>
+    );
+  }
 
   return (
     <div className={style.sessionContainer}>

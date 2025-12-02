@@ -486,6 +486,45 @@
   -webkit-text-stroke: 1px var(--text-primary);
 }
 
+.sessionSharedToggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  min-height: 60vh;
+}
+
+.sessionSharedToggle p:first-child {
+  font-size: 4rem;
+  margin: 0 0 1.5rem 0;
+  animation: bounce 0.6s ease-in-out;
+}
+
+.sessionSharedToggle p:last-child {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  80% {
+    transform: translateY(-5px);
+  }
+}
+
 /* Desktop Width Control */
 @media (min-width: 769px) {
   .sessionContainer {
