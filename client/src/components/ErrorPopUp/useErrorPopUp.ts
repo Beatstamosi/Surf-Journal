@@ -12,14 +12,13 @@ export function useErrorPopup() {
 
   const closeError = () => {
     setIsVisible(false);
-    // Clear error after animation if needed
-    setTimeout(() => setError(null), 300);
+    setError(null);
   };
 
   return {
     showError,
     closeError,
     error,
-    isErrorVisible: isVisible
+    isErrorVisible: isVisible,
   };
 }

@@ -167,7 +167,7 @@ export default function AddSession() {
           <form className={style.formAddSession}>
             <div className={style.inputGroup}>
               <label htmlFor="spotName" className={style.label}>
-                Spot Name
+                Spot Name - only use spots that are on surfline
               </label>
               <input
                 type="text"
