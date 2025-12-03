@@ -139,11 +139,13 @@ const updateSession = async (req: Request, res: Response) => {
           },
         });
       } else {
-        await tx.post.delete({
-          where: {
-            id: session.post?.id,
-          },
-        });
+        if (session.post) {
+          await tx.post.delete({
+            where: {
+              id: session.post?.id,
+            },
+          });
+        }
       }
 
       return session;
