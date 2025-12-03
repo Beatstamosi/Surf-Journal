@@ -18,7 +18,7 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
-  "https://surflog-frontend-production.up.railway.app/sign-up",
+  "https://surflog-frontend-production.up.railway.app",
   "http://localhost:5173",
 ];
 
