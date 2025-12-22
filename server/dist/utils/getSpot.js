@@ -17,7 +17,7 @@ export async function getSpot(spot) {
         return cached;
     }
     try {
-        const { data } = await surflineClient.get(`/search/site?q=${encodeURIComponent(spot)}&type=spot`);
+        const { data } = await surflineClient.get(`/proxy/surfline/search/site?q=${encodeURIComponent(spot)}&type=spot`);
         const spotsData = data?.[0];
         const hits = spotsData?.hits?.hits ?? [];
         if (hits.length === 0) {
@@ -32,12 +32,12 @@ export async function getSpot(spot) {
             href: src.href,
             region: src.breadCrumbs?.join(" › ") ?? "",
         };
-        console.log(`✅ Found spot for "${spot}":`, result.spotName);
+        console.log(`Found spot for "${spot}":`, result.spotName);
         spotCache.set(key, result);
         return result;
     }
     catch (err) {
-        console.error("❌ Error fetching spot:", err);
+        console.error("Error fetching spot:", err);
         return null;
     }
 }

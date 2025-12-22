@@ -11,6 +11,7 @@ import userRouter from "./routes/user.js";
 import boardsRouter from "./routes/boards.js";
 import sessionRouter from "./routes/session.js";
 import postsRouter from "./routes/posts.js";
+import { surflineClient } from './utils/surflineClient.js';
 // Load environment variables FIRST
 dotenv.config();
 const app = express();
@@ -35,6 +36,30 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
 }));
+// Add this route BEFORE app.use(express.json()) and other routes
+app.get('/proxy/surfline/*', async (req, res) => {
+    try {
+        // 1. Get the Surfline API path - TypeScript needs explicit typing
+        const surflinePath = req.params['0']; // Fixed line
+        // 2. Forward all query parameters from the original request
+        const queryParams = new URLSearchParams(req.query).toString();
+        // 3. Build the full Surfline URL
+        const fullSurflineUrl = `/${surflinePath}${queryParams ? '?' + queryParams : ''}`;
+        console.log(`🔄 Proxying: ${fullSurflineUrl}`);
+        // 4. Use your existing surflineClient (with all the good headers)
+        const response = await surflineClient.get(fullSurflineUrl);
+        // 5. Send the Surfline data back to the client
+        res.json(response.data);
+    }
+    catch (error) {
+        console.error('❌ Proxy error:', error.message);
+        // Pass through the Surfline error status if available
+        res.status(error.response?.status || 500).json({
+            error: 'Proxy request failed',
+            details: error.message
+        });
+    }
+});
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.urlencoded({ extended: false }));
