@@ -29,44 +29,70 @@ export async function getSpot(spot: string): Promise<SurflineSpot | null> {
       `/search/site?q=${spot}&type=spot`
     );
 
-    // Always get spots from the first array element
-    const spotsResults = data?.[0];
-    if (!spotsResults) {
-      console.log(`No spot search results found for "${spot}"`);
-      return null;
-    }
-
-    const hits = spotsResults?.hits?.hits ?? [];
+    // Get spots from first array element
+    const spotsData = data?.[0];
+    const hits = spotsData?.hits?.hits ?? [];
 
     if (hits.length === 0) {
-      console.log(`No spot hits found for "${spot}"`);
+      console.log(`No spots found for "${spot}"`);
       return null;
     }
 
-    console.log(
-      `Found ${hits.length} spots for "${spot}":`,
-      hits.map((h: any) => h._source?.name)
-    );
+    const searchTerm = spot.toLowerCase();
 
-    // Try to find exact match (case-insensitive)
+    // 1. Try exact match first
     const exactMatch = hits.find(
-      (hit: any) => hit._source?.name?.toLowerCase() === spot.toLowerCase()
+      (hit: any) => hit._source?.name?.toLowerCase() === searchTerm
     );
 
-    // Use exact match if found, otherwise use first result
-    const chosen = exactMatch || hits[0];
-    const src = chosen._source;
+    if (exactMatch) {
+      console.log(`Found exact match for "${spot}":`, exactMatch._source?.name);
+      const src = exactMatch._source;
+      const result = {
+        spotId: exactMatch._id,
+        spotName: src.name,
+        href: src.href,
+        region: src.breadCrumbs?.join(" › ") ?? "",
+      };
+      spotCache.set(key, result);
+      return result;
+    }
 
-    const result: SurflineSpot = {
-      spotId: chosen._id,
+    // 2. Try partial match (spot name contains search term)
+    const partialMatches = hits.filter((hit: any) =>
+      hit._source?.name?.toLowerCase().includes(searchTerm)
+    );
+
+    if (partialMatches.length > 0) {
+      // Use the highest scored partial match
+      const bestMatch = partialMatches[0];
+      console.log(
+        `Found partial match for "${spot}":`,
+        bestMatch._source?.name
+      );
+      const src = bestMatch._source;
+      const result = {
+        spotId: bestMatch._id,
+        spotName: src.name,
+        href: src.href,
+        region: src.breadCrumbs?.join(" › ") ?? "",
+      };
+      spotCache.set(key, result);
+      return result;
+    }
+
+    // 3. Fall back to first result if nothing matches
+    console.log(
+      `No direct match for "${spot}", using first result:`,
+      hits[0]._source?.name
+    );
+    const src = hits[0]._source;
+    const result = {
+      spotId: hits[0]._id,
       spotName: src.name,
       href: src.href,
       region: src.breadCrumbs?.join(" › ") ?? "",
     };
-
-    console.log(`Selected spot: "${result.spotName}"`);
-
-    // Cache the result
     spotCache.set(key, result);
     return result;
   } catch (err) {
