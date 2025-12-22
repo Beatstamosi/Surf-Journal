@@ -1,4 +1,4 @@
-import { surflineClient } from "./surflineClient.js";
+import axios from "axios";
 
 export interface SurflineSpot {
   spotId: string;
@@ -13,7 +13,7 @@ const spotCache = new Map<string, SurflineSpot>();
 /**
  * Fetches the closest matching Surfline spot by name.
  * - Uses Surfline's public search API (no scraping).
- * - Always returns the first result from Surfline's search.
+ * - Prioritizes exact name matches (case-insensitive).
  * - Caches results in memory for faster repeated lookups.
  */
 export async function getSpot(spot: string): Promise<SurflineSpot | null> {
@@ -24,35 +24,36 @@ export async function getSpot(spot: string): Promise<SurflineSpot | null> {
     return spotCache.get(key)!;
   }
 
+  const searchUrl = `https://services.surfline.com/search/site?q=${encodeURIComponent(
+    spot
+  )}&type=spot`;
+
   try {
-    const { data } = await surflineClient.get(
-      `/search/site?q=${spot}&type=spot`
+    const { data } = await axios.get(searchUrl);
+
+    // Extract the list of spot hits from Surfline's API response
+    const hits = data?.[0]?.hits?.hits ?? [];
+    if (hits.length === 0) return null;
+
+    // Try to find an exact match first (case-insensitive)
+    const exactMatch = hits.find(
+      (hit: any) => hit._source?.name?.toLowerCase() === spot.toLowerCase()
     );
 
-    // Get spots from first array element
-    const spotsData = data?.[0];
-    const hits = spotsData?.hits?.hits ?? [];
-
-    if (hits.length === 0) {
-      console.log(`No spots found for "${spot}"`);
-      return null;
-    }
-
-    // Always take the first result (highest score from Surfline)
-    const firstHit = hits[0];
-    const src = firstHit._source;
+    // Use the best available match
+    const chosen = exactMatch || hits[0];
+    const src = chosen._source;
 
     const result: SurflineSpot = {
-      spotId: firstHit._id,
+      spotId: chosen._id,
       spotName: src.name,
       href: src.href,
       region: src.breadCrumbs?.join(" › ") ?? "",
     };
 
-    console.log(`Found spot for "${spot}":`, result.spotName);
-
     // Cache the result
     spotCache.set(key, result);
+
     return result;
   } catch (err) {
     console.error("Error fetching spot:", err);
