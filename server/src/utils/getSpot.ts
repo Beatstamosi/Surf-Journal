@@ -54,7 +54,6 @@ export async function getSpot(spot: string): Promise<SurflineSpot | null> {
     // Cache the result
     spotCache.set(key, result);
     return result;
-
   } catch (err) {
     console.error("Error fetching spot:", err);
     return null;
