@@ -1,4 +1,4 @@
-import { surflineClient } from "./surflineClient.js";
+import axios from "axios";
 import { getSpot } from "../utils/getSpot.js";
 import type { SurflineSpot } from "../utils/getSpot.js";
 
@@ -177,17 +177,18 @@ export async function getSurfReport(
     const spotId = surfInfo.spotId;
 
     // Step 2: Build URLs for reliable endpoints
+    const base = "https://services.surfline.com/kbyg/spots/forecasts";
     const params = `spotId=${spotId}&days=1&intervalHours=1`;
 
-    const waveUrl = `/kbyg/spots/forecasts/wave?${params}`;
-    const windUrl = `/kbyg/spots/forecasts/wind?${params}`;
-    const tideUrl = `/kbyg/spots/forecasts/tides?${params}`;
+    const waveUrl = `${base}/wave?${params}`;
+    const windUrl = `${base}/wind?${params}`;
+    const tideUrl = `${base}/tides?${params}`;
 
-    // Step 3: Fetch all data in parallel using surflineClient
+    // Step 3: Fetch all data in parallel
     const [waveRes, windRes, tideRes] = await Promise.all([
-      surflineClient.get(waveUrl),
-      surflineClient.get(windUrl),
-      surflineClient.get(tideUrl),
+      axios.get(waveUrl),
+      axios.get(windUrl),
+      axios.get(tideUrl),
     ]);
 
     const waveData = waveRes.data?.data?.wave ?? [];
