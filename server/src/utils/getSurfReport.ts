@@ -1,4 +1,4 @@
-import axios from "axios";
+import { surflineClient } from "./surflineClient.js";
 import { getSpot } from "../utils/getSpot.js";
 import type { SurflineSpot } from "../utils/getSpot.js";
 
@@ -186,9 +186,9 @@ export async function getSurfReport(
 
     // Step 3: Fetch all data in parallel
     const [waveRes, windRes, tideRes] = await Promise.all([
-      axios.get(waveUrl),
-      axios.get(windUrl),
-      axios.get(tideUrl),
+      surflineClient.get(waveUrl),
+      surflineClient.get(windUrl),
+      surflineClient.get(tideUrl),
     ]);
 
     const waveData = waveRes.data?.data?.wave ?? [];

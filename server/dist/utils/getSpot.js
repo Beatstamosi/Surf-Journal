@@ -1,4 +1,4 @@
-import axios from "axios";
+import { surflineClient } from "./surflineClient.js";
 // In-memory cache (key: lowercase spot name)
 const spotCache = new Map();
 /**
@@ -15,7 +15,7 @@ export async function getSpot(spot) {
     }
     const searchUrl = `https://services.surfline.com/search/site?q=${encodeURIComponent(spot)}&type=spot`;
     try {
-        const { data } = await axios.get(searchUrl);
+        const { data } = await surflineClient.get(searchUrl);
         // Extract the list of spot hits from Surfline's API response
         const hits = data?.[0]?.hits?.hits ?? [];
         if (hits.length === 0)

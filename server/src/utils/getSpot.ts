@@ -1,4 +1,4 @@
-import axios from "axios";
+import { surflineClient } from "./surflineClient.js";
 
 export interface SurflineSpot {
   spotId: string;
@@ -29,7 +29,7 @@ export async function getSpot(spot: string): Promise<SurflineSpot | null> {
   )}&type=spot`;
 
   try {
-    const { data } = await axios.get(searchUrl);
+    const { data } = await surflineClient.get(searchUrl);
 
     // Extract the list of spot hits from Surfline's API response
     const hits = data?.[0]?.hits?.hits ?? [];
