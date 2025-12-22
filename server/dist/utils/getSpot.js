@@ -9,34 +9,35 @@ const spotCache = new Map();
  */
 export async function getSpot(spot) {
     const key = spot.toLowerCase();
-    // Check cache first
+    // For debugging, clear cache or skip it
+    // spotCache.clear();
     if (spotCache.has(key)) {
-        return spotCache.get(key);
+        const cached = spotCache.get(key);
+        console.log(`Using cached result for "${spot}":`, cached.spotName);
+        return cached;
     }
-    const searchUrl = `https://services.surfline.com/search/site?q=${encodeURIComponent(spot)}&type=spot`;
     try {
-        const { data } = await surflineClient.get(searchUrl);
-        // Extract the list of spot hits from Surfline's API response
-        const hits = data?.[0]?.hits?.hits ?? [];
-        if (hits.length === 0)
+        const { data } = await surflineClient.get(`/search/site?q=${encodeURIComponent(spot)}&type=spot`);
+        const spotsData = data?.[0];
+        const hits = spotsData?.hits?.hits ?? [];
+        if (hits.length === 0) {
+            console.log(`❌ No spots found for "${spot}"`);
             return null;
-        // Try to find an exact match first (case-insensitive)
-        const exactMatch = hits.find((hit) => hit._source?.name?.toLowerCase() === spot.toLowerCase());
-        // Use the best available match
-        const chosen = exactMatch || hits[0];
-        const src = chosen._source;
+        }
+        const firstHit = hits[0];
+        const src = firstHit._source;
         const result = {
-            spotId: chosen._id,
+            spotId: firstHit._id,
             spotName: src.name,
             href: src.href,
             region: src.breadCrumbs?.join(" › ") ?? "",
         };
-        // Cache the result
+        console.log(`✅ Found spot for "${spot}":`, result.spotName);
         spotCache.set(key, result);
         return result;
     }
     catch (err) {
-        console.error("Error fetching spot:", err);
+        console.error("❌ Error fetching spot:", err);
         return null;
     }
 }
