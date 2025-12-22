@@ -131,7 +131,7 @@ const updateSession = async (req: Request, res: Response) => {
       });
 
       // 2. Create post if shared
-      if (shareInFeed) {
+      if (shareInFeed && !session.post) {
         await tx.post.create({
           data: {
             creatorId: user.id,
@@ -139,7 +139,7 @@ const updateSession = async (req: Request, res: Response) => {
           },
         });
       } else {
-        if (session.post) {
+        if (session.post && !shareInFeed) {
           await tx.post.delete({
             where: {
               id: session.post?.id,
