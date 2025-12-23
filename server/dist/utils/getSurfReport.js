@@ -1,5 +1,7 @@
-import { surflineClient } from "./surflineClient.js";
+import axios from "axios";
 import { getSpot } from "../utils/getSpot.js";
+// Get proxy URL from environment
+const PROXY_URL = process.env.PROXY_URL;
 /**
  * Convert Surfline's 1-5 rating to text description
  */
@@ -130,38 +132,61 @@ function getSpotSpecificAdjustment(spotName, waveHeight) {
  */
 export async function getSurfReport(sessionStart, name) {
     try {
-        // Step 1: Find the surf spot
+        // Step 1: Find the surf spot (uses proxy via getSpot)
         const surfInfo = await getSpot(name);
         if (!surfInfo) {
-            console.warn(`No surf spot found for "${name}"`);
+            console.warn(`❌ No surf spot found for "${name}"`);
             return null;
         }
         const spotId = surfInfo.spotId;
-        // Step 2: Build URLs for reliable endpoints
-        const base = "https://services.surfline.com/kbyg/spots/forecasts";
-        const params = `spotId=${spotId}&days=1&intervalHours=1`;
-        const waveUrl = `${base}/wave?${params}`;
-        const windUrl = `${base}/wind?${params}`;
-        const tideUrl = `${base}/tides?${params}`;
-        // Step 3: Fetch all data in parallel
+        // Step 2: Build parameters (NOT URLs)
+        const params = {
+            spotId: spotId,
+            days: 1,
+            intervalHours: 1,
+        };
+        // Step 3: Fetch all data in parallel via PROXY
         const [waveRes, windRes, tideRes] = await Promise.all([
-            surflineClient.get(`/proxy/surfline${waveUrl.replace("https://services.surfline.com", "")}`), // Changed
-            surflineClient.get(`/proxy/surfline${windUrl.replace("https://services.surfline.com", "")}`), // Changed
-            surflineClient.get(`/proxy/surfline${tideUrl.replace("https://services.surfline.com", "")}`), // Changed
+            // Wave forecast via proxy
+            axios.get(`${PROXY_URL}/api/proxy`, {
+                params: {
+                    endpoint: "kbyg/spots/forecasts/wave",
+                    ...params,
+                },
+            }),
+            // Wind forecast via proxy
+            axios.get(`${PROXY_URL}/api/proxy`, {
+                params: {
+                    endpoint: "kbyg/spots/forecasts/wind",
+                    ...params,
+                },
+            }),
+            // Tide forecast via proxy
+            axios.get(`${PROXY_URL}/api/proxy`, {
+                params: {
+                    endpoint: "kbyg/spots/forecasts/tides",
+                    ...params,
+                },
+            }),
         ]);
+        // EXTRACT DATA - proxy returns same structure
         const waveData = waveRes.data?.data?.wave ?? [];
         const windData = windRes.data?.data?.wind ?? [];
         const tideData = tideRes.data?.data?.tides ?? [];
-        if (waveData.length === 0)
+        if (waveData.length === 0) {
+            console.warn(`❌ No wave data returned for spot ${spotId}`);
             return null;
+        }
         // Helper to format timestamps
         const toSessionString = (ts) => new Date(ts * 1000).toISOString().slice(0, 16).replace("T", " ");
         // Step 4: Match entries by session time
         const waveMatch = waveData.find((w) => toSessionString(w.timestamp) === sessionStart);
         const windMatch = windData.find((w) => toSessionString(w.timestamp) === sessionStart);
         const tideMatch = tideData.find((t) => toSessionString(t.timestamp) === sessionStart);
-        if (!waveMatch)
+        if (!waveMatch) {
+            console.warn(`❌ No wave match for session time: ${sessionStart}`);
             return null;
+        }
         const surf = waveMatch.surf;
         const swells = waveMatch.swells?.slice(0, 3).map((swell, i) => ({
             name: `Swell ${i + 1}`,
@@ -178,10 +203,12 @@ export async function getSurfReport(sessionStart, name) {
                 value: waveMatch.rating.value,
                 source: "api",
             };
+            console.log(`⭐ Using API rating: ${rating.value}`);
         }
         else {
             // Calculate enhanced rating
             rating = calculateEnhancedRating(waveMatch, windMatch, tideMatch, surfInfo.spotName);
+            console.log(`⭐ Using enhanced rating: ${rating.value}`);
         }
         const report = {
             spotName: surfInfo.spotName,
@@ -212,7 +239,11 @@ export async function getSurfReport(sessionStart, name) {
         return report;
     }
     catch (error) {
-        console.error("Error fetching surf report:", error);
+        console.error("❌ Error fetching surf report via proxy:", {
+            message: error.message,
+            status: error.response?.status,
+            url: error.config?.url,
+        });
         return null;
     }
 }

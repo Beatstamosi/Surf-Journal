@@ -20,6 +20,7 @@ const app = express();
 const allowedOrigins = [
   "https://surflog-frontend-production.up.railway.app",
   "http://localhost:5174",
+  "http://localhost:5173"
 ];
 
 // CORS must be configured BEFORE other middleware
