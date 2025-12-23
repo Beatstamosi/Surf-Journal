@@ -83,6 +83,13 @@ export default function MyProfile() {
       return;
     }
 
+    if (user?.email == "test@test.com") {
+      alert(
+        "Don't spoil the fun for the others! Test account can't be deleted."
+      );
+      return;
+    }
+
     try {
       const data = await apiClient("/user/delete", { method: "DELETE" });
 
